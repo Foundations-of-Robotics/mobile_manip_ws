@@ -1,0 +1,7 @@
+move_base:
+  global_costmap:
+    footprint: [[0.345, -0.260], [0.345, 0.260], [-0.345, 0.260], [-0.345, -0.260]]
+  local_costmap:
+    footprint: [[0.345, -0.260], [0.345, 0.260], [-0.345, 0.260], [-0.345, -0.260]]
+  TrajectoryPlannerROS:
+    holonomic_robot: false

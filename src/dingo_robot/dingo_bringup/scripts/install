@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+import os
+import robot_upstart
+
+from catkin.find_in_workspaces import find_in_workspaces
+
+main_job = robot_upstart.Job(workspace_setup=os.environ['ROBOT_SETUP'])
+main_job.symlink=True
+main_job.add(package="dingo_base", filename="launch/base.launch")
+main_job.add(package="dingo_bringup", filename="launch/accessories.launch")
+main_job.install()
+
+# Wait to for can-udp-bridge to be up before starting ROS
+os.system("sudo  sed -i '/After/c After=can-udp-bridge.service' /lib/systemd/system/ros.service")
+
+class DingoExtras(robot_upstart.providers.Generic):
+    def post_install(self):
+        pass
+
+    def generate_install(self):
+        with open(find_in_workspaces(project="dingo_bringup", path="can-udp-bridge.conf")[0]) as f:
+            can_conf_contents = f.read()
+        with open(find_in_workspaces(project="dingo_bringup", path="can-udp-bridge.sh")[0]) as f:
+            can_sh_contents = f.read()
+        return {
+            "/lib/systemd/system/can-udp-bridge.service": {
+                "content": can_conf_contents,
+                "mode": 0o644
+            },
+            "/usr/sbin/can-udp-bridge": {
+                "content": can_sh_contents,
+                "mode": 0o755
+            },
+            "/etc/systemd/system/multi-user.target.wants/can-udp-bridge.service": {
+                "symlink": "/lib/systemd/system/can-udp-bridge.service"
+            }}
+
+
+other_job = robot_upstart.Job()
+other_job.install(Provider=DingoExtras)

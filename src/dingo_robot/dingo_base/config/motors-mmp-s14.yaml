@@ -1,0 +1,7 @@
+gear_ratio: 25.01
+encoder_cpr: 256
+flip_motor_direction: true
+gains:
+  p: 0.08
+  i: 0.01
+  d: 0.00

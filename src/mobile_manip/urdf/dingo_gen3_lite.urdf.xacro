@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot name="dingo_gen3_lite" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Arguments -->
+  <xacro:arg name="arm" default="gen3_lite" />
+  <!-- Those arguments are ignored for now on Gen3 lite because there is only one supported configuration -->
+  <xacro:arg name="dof" default="6" />
+  <xacro:arg name="vision" default="false" />
+  <xacro:arg name="gripper" default="gen3_lite_2f" />
+  <xacro:arg name="sim" default="false" />
+  <xacro:arg name="prefix" default="" />
+
+  <!-- URDF definition for the Dingo robot -->
+  <xacro:include filename="$(find mobile_manip)/urdf/dingo_realsense.urdf.xacro" />
+
+  <joint name="support_to_gen3" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="gen3_mount_link" />
+    <child link="$(arg prefix)base_link" />
+  </joint>
+
+  <!-- Gen3 lite arm robot -->
+  <xacro:include filename="$(find mobile_manip)/urdf/kortex_robot_float.xacro" />
+  <xacro:load_robot arm="$(arg arm)" gripper="$(arg gripper)" dof="$(arg dof)" vision="false" sim="$(arg sim)" prefix="$(arg prefix)" />
+
+  <gazebo>
+    <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>50.0</updateRate>
+      <bodyName>base_link</bodyName>
+      <topicName>ground_truth/state</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+
+</robot>

@@ -1,0 +1,16 @@
+<launch>
+  <arg name="scan_topic" default="$(eval optenv('DINGO_LASER_TOPIC', 'front/scan'))" />
+
+  <!-- Run the map server -->
+ <arg name="map_file" default="$(dirname)/../maps/dingo_race.yaml"/>
+ <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!--- Run AMCL -->
+ <include file="$(dirname)/../launch/include/amcl.launch">
+   <arg name="scan_topic" value="$(arg scan_topic)" />
+ </include>
+
+  <!--- Run Move Base -->
+ <include file="$(dirname)/../launch/include/move_base.launch" />
+
+</launch>

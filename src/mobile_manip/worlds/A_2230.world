@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+    <world name="default">
+
+        <gui>
+            <camera name="user_camera">
+                <pose>13.2 -3.86 15.6 0 1.1 2.7</pose>
+            </camera>
+        </gui>
+
+        <physics type='ode'>
+            <max_step_size>0.001</max_step_size>
+            <real_time_factor>1</real_time_factor>
+            <real_time_update_rate>1000</real_time_update_rate>
+            <gravity>0 0 -9.8</gravity>
+        </physics>
+
+        <!-- A global light source -->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <!-- A ground plane -->
+        <include>
+          <uri>model://my_ground_plane</uri>
+        </include>
+
+        <!-- Building with rooms and corridors -->
+        <include>
+            <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+            <uri>model://A2230_arena</uri>
+        </include>
+
+        <!-- Adding objects to the world -->
+
+        <!-- Add a first box -->
+        <model name="box1">
+          <include>
+              <pose>7.9 15 0.25 0.0 0.0 1.57</pose>
+              <uri>model://cardboard_box</uri>
+          </include>
+        </model>
+        <!-- and a can -->
+        <model name="can1">
+          <include>
+              <pose>7.9 14.65 0.4 0.0 0.0 1.57</pose>
+              <uri>model://coca_cola</uri>
+          </include>
+        </model>
+        <!-- with their April tag -->
+        <include>
+            <pose>7.9 15.0 0.5 0.0 1.57 1.57</pose>
+            <uri>model://Apriltag36_11_00006</uri>
+        </include>
+
+        <!-- Add a second box -->
+        <model name="box2">
+          <include>
+              <pose>5.3 2.6 0.25 0.0 1.57 0.0</pose>
+              <uri>model://cardboard_box</uri>
+          </include>
+        </model>
+        <!-- with their April tag -->
+        <include>
+            <pose>5.455 2.6 0.38 1.57 0.0 1.57</pose>
+            <uri>model://Apriltag36_11_00007</uri>
+        </include>
+
+        <!-- Add a third box  -->
+        <model name="box3">
+          <include>
+            <pose>-10.2 1.45 0.0 0.0 1.57 0.0</pose>
+            <uri>model://cardboard_box</uri>
+          </include>
+        </model>
+        <!-- and a can -->
+        <model name="can3">
+          <include>
+              <pose>-10.0 1.45 0.45 0.0 0.0 1.57</pose>
+              <uri>model://coca_cola</uri>
+          </include>
+        </model>
+        <!-- with their April tag -->
+        <include>
+            <pose>-9.95 1.45 0.38 1.57 0.0 1.57</pose>
+            <uri>model://Apriltag36_11_00008</uri>
+        </include>
+
+        <!-- Add a fourth box -->
+        <model name="box4">
+          <include>
+              <pose>12.98 6.5 0.25 0.0 1.57 0.0</pose>
+              <uri>model://cardboard_box</uri>
+          </include>
+        </model>
+        <!-- and a can -->
+        <model name="can4">
+          <include>
+              <pose>12.94 6.5 0.45 0.0 0.0 1.57</pose>
+              <uri>model://coca_cola</uri>
+          </include>
+        </model>
+        <!-- with their April tag -->
+        <include>
+            <pose>12.82 6.5 0.38 0.0 1.57 0.0</pose>
+            <uri>model://Apriltag36_11_00009</uri>
+        </include>
+
+        <!-- Dummy tag for the tag on the door to have the proper visual -->
+        <include>
+            <pose>0 0 -5 0 0 0</pose>
+            <uri>model://Apriltag36_11_00002</uri>
+        </include>
+
+    </world>
+</sdf>

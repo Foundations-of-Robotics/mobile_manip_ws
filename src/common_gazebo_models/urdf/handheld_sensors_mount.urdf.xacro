@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot name="handheld_sensors_mount" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="mass" value="1.0" />
+
+  <link name="handheld_sensors_mount_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://common_gazebo_models/meshes/handheld_sensors_mount/handheld_sensors_mount.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.127 0.1 0.1"/>
+      </geometry>
+    </collision>
+    <!-- <inertial>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia
+        ixx="0.000001" ixy="0" ixz="0"
+        iyy="0.000001" iyz="0"
+        izz="0.000001"/>
+    </inertial> -->
+  </link>
+
+  <gazebo reference="handheld_sensors_mount_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <link name="d435_mount_link"/>
+  <link name="t265_mount_link"/>
+  <link name="velodyne_mount_link"/>
+
+  <joint name="mount_to_d435_joint" type="fixed">
+    <parent link="handheld_sensors_mount_link"></parent>
+    <child link="d435_mount_link"></child>
+    <origin xyz="0.050214 0.00587 0.083955" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="mount_to_t265_joint" type="fixed">
+    <parent link="handheld_sensors_mount_link"></parent>
+    <child link="t265_mount_link"></child>
+    <origin xyz="0.063514 -0.002601 0.05425" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="mount_to_velodyne_joint" type="fixed">
+    <parent link="handheld_sensors_mount_link"></parent>
+    <child link="velodyne_mount_link"></child>
+    <origin xyz="0 0 0.1" rpy="0 0 0.742" />
+  </joint>
+  
+</robot>

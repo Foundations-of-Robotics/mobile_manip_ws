@@ -1,0 +1,11 @@
+{
+  "base_url": "/user/admin_mec/",
+  "hostname": "127.0.0.1",
+  "notebook_dir": "/home/jupyter-admin_mec",
+  "password": false,
+  "pid": 19709,
+  "port": 37443,
+  "secure": false,
+  "token": "",
+  "url": "http://127.0.0.1:37443/user/admin_mec/"
+}

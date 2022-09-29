@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<launch>
+    <arg name="robot_name" default="mobile_manip"/>
+    
+    <include file="$(find kortex_driver)/launch/kortex_driver.launch">
+        <arg name="arm" value="gen3_lite"/>
+        <arg name="vision" value="false"/>
+        <arg name="prefix" value="arm_"/>
+        <arg name="start_rviz" value="false"/>
+        <arg name="robot_name" value="$(arg robot_name)"/>
+    </include>
+
+      <!-- Robot namespace -->
+    <arg name="start_delay_seconds" default="5"/>
+
+    <!-- Launch the example in that namespace -->
+    <node name="moveit_gen3lite" pkg="mobile_manip" type="move_it_trajectories.py" ns="$(arg robot_name)" output="screen" launch-prefix="bash -c 'sleep $(arg start_delay_seconds); $0 $@' "/>
+
+</launch>

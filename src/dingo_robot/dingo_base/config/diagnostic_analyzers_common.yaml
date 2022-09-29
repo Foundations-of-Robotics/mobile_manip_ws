@@ -1,0 +1,31 @@
+analyzers:
+  dingo:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: Dingo Base
+    analyzers:
+      general:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: General
+        remove_prefix: 'dingo_node'
+        timeout: 5.0
+        expected: [
+          'dingo_node: General',
+          'dingo_node: Battery',
+          'dingo_node: User voltage supplies',
+          'dingo_node: Current consumption',
+          'dingo_node: Power consumption' ,
+          'dingo_node: Temperature']
+      sensors:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: Sensor Topics
+        remove_prefix: 'dingo_node'
+        timeout: 5.0
+        expected: [
+          'dingo_node: /imu/data_raw topic status']
+      teleop:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: Bluetooth Joystick
+        remove_prefix: 'bluetooth_teleop/joy_node'
+        timeout: 5.0
+        expected: [
+          'bluetooth_teleop/joy_node: Joystick Driver Status' ]

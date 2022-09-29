@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<robot name="dingo_realsense" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- URDF definition for the dingo robot -->
+  <xacro:include filename="$(find mobile_manip)/urdf/dingo-d.urdf.xacro" />
+
+  <joint name="support_joint" type="fixed">
+    <parent link="chassis_link" />
+    <child link="turret_link" />
+    <origin xyz="0 0 0.097" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Gen3 Support model -->
+  <xacro:include filename="$(find common_gazebo_models)/urdf/turret.urdf.xacro" />
+
+  <joint name="cameras_mount_joint" type="fixed">
+    <parent link="cameras_mount_link"></parent>
+    <child link="realsense_mount_link"></child>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- Mount with the cameras -->
+  <xacro:include filename="$(find mobile_manip)/urdf/standalone_d435_t265.urdf.xacro" />
+
+</robot>

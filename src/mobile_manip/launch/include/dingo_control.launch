@@ -1,0 +1,19 @@
+<launch>
+
+    <arg name="config_file" default="$(find mobile_manip)/config/dingo_control.yaml" />
+
+    <rosparam command="load" file="$(arg config_file)" />
+
+    <node name="controller_spawner" pkg="controller_manager" type="spawner"
+        args="dingo_joint_publisher dingo_velocity_controller" />
+
+    <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization">
+        <rosparam command="load" file="$(find dingo_control)/config/robot_localization.yaml" />
+    </node> -->
+
+    <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+        <rosparam command="load" file="$(find dingo_control)/config/twist_mux.yaml" />
+        <remap from="cmd_vel_out" to="dingo_velocity_controller/cmd_vel"/>
+    </node>
+
+</launch>

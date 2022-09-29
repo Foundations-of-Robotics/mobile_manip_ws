@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot name="turret" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="mass" value="5.0" />
+
+    <link name="turret_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://common_gazebo_models/meshes/turret/turret.dae" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.2095" rpy="0 0 0" />
+            <geometry>
+                <box size="0.385 0.206 0.419" />
+            </geometry>
+        </collision>
+        <!-- <inertial>
+            <origin xyz="0 0 0.2095" rpy="0 0 0" />
+            <mass value="${mass}" />
+            <inertia ixx="${0.03653 * mass}" ixy="0" ixz="0" iyy="${0.04452 * mass}" iyz="0" izz="${0.02055 * mass}" />
+        </inertial> -->
+    </link>
+
+    <gazebo reference="turret_link">
+        <material>Gazebo/FlatBlack</material>
+    </gazebo>
+
+    <link name="cameras_mount_link" />
+    <link name="gen3_mount_link" />
+
+    <joint name="turret_to_cameras_joint" type="fixed">
+        <parent link="turret_link"></parent>
+        <child link="cameras_mount_link"></child>
+        <origin xyz="0.1659 0 0.3828" rpy="0 0 0" />
+    </joint>
+
+    <joint name="turret_to_gen3_joint" type="fixed">
+        <parent link="turret_link"></parent>
+        <child link="gen3_mount_link"></child>
+        <origin xyz="0.0125 0 0.3984" rpy="0 0 0" />
+    </joint>
+
+</robot>

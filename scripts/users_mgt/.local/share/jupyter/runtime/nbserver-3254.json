@@ -1,0 +1,12 @@
+{
+  "base_url": "/user/mecbotg0/",
+  "hostname": "127.0.0.1",
+  "notebook_dir": "/home/jupyter-mecbotg0",
+  "password": false,
+  "pid": 3254,
+  "port": 38069,
+  "secure": false,
+  "sock": "",
+  "token": "",
+  "url": "http://127.0.0.1:38069/user/mecbotg0/"
+}

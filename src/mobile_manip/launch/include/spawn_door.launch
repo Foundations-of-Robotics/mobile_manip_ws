@@ -1,0 +1,11 @@
+<launch>
+
+    <arg name="name" default="door"/>
+    <arg name="model_name" default="$(find mobile_manip)/urdf/door.urdf.xacro"/>
+    <arg name="init_pose" default="-x 0 -y 0 -z 0"/>
+
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model_name)" />
+    <node name="spawn_door" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model $(arg name) $(arg init_pose) -robot_namespace $(arg name)" respawn="false" output="screen"/>
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="door_state_publisher" output="screen"/>
+
+</launch>

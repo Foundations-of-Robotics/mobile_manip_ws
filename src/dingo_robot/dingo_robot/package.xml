@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <name>dingo_robot</name>
+  <version>0.1.3</version>
+  <description>Metapackage of software to install on Dingo.</description>
+
+  <maintainer email="tbaltovski@clearpathrobotics.com">Tony Baltovski</maintainer>
+  <author email="tbaltovski@clearpathrobotics.com">Tony Baltovski</author>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>dingo_bringup</run_depend>
+  <!-- Removed dependency on firmware for now. -->
+  <!-- <run_depend>dingo_firmware</run_depend> -->
+
+  <export>
+    <metapackage />
+  </export>
+</package>

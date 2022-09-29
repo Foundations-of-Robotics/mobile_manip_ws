@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot name="standalone_d435_t265" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Mount for the cameras -->
+  <xacro:include filename="$(find common_gazebo_models)/urdf/realsense_mount.urdf.xacro" />
+
+  <link name="t265_pose_frame" />
+
+  <joint name="mount_to_t265_pose_frame" type="fixed">
+    <parent link="t265_mount_link"></parent>
+    <child link="t265_pose_frame"></child>
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>
+
+  <!-- Realsense T265 -->
+  <xacro:include filename="$(find realsense_simulator)/urdf/_t265.urdf.xacro" />
+  <xacro:sensor_t265 name="t265" topics_ns="t265" tf_prefix="t265" parent="t265_mount_link">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:sensor_t265>
+
+  <!-- Realsense D435i -->
+  <xacro:include filename="$(find realsense_simulator)/urdf/_d435.urdf.xacro" />
+  <xacro:sensor_d435 name="d435i" topics_ns="d435i" parent="d435_mount_link">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:sensor_d435>
+
+</robot>

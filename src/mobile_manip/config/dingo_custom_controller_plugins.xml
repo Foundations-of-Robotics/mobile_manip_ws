@@ -1,0 +1,9 @@
+<library path="lib/libdingo_custom_ros_controller">
+
+    <class name="dingo_custom_ros_controller/DingoCustomRosController" type="dingo_custom_ros_controller::DingoCustomRosController" base_class_type="controller_interface::ControllerBase">
+        <description>
+            Custom ROS controller for the Clearpath Dingo
+        </description>
+    </class>
+
+</library>

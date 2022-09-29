@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<launch>
+
+    <arg name="robot_name" default="mobile_manip"/>
+
+    <group ns="$(arg robot_name)">
+        <include file="$(find mobile_manip)/launch/include/rs_d400_and_t265.launch"></include>
+    </group>
+
+    <include file="$(find kortex_driver)/launch/kortex_driver.launch">
+        <arg name="arm" value="gen3_lite"/>
+        <arg name="vision" value="false"/>
+        <arg name="start_rviz" value="false"/>
+        <arg name="robot_name" value="$(arg robot_name)"/>
+        <!--arg name="prefix" value="arm_"/-->
+    </include>
+
+    <!--node pkg="tf" type="static_transform_publisher" name="cam_to_gen3" args="-0.16 0.039 0.037 0 0 0 /t265_pose_frame /gen3_lite_base_link 100"/-->
+
+    <!-- Delay MoveIt! start -->
+    <arg name="start_delay_seconds" default="2"/>
+
+    <!-- Launch Moveit! service wrapper -->
+    <node name="moveit_gen3lite" pkg="mobile_manip" type="move_it_trajectories.py" ns="$(arg robot_name)" output="screen" launch-prefix="bash -c 'sleep $(arg start_delay_seconds); $0 $@' "/>
+
+    <!-- AprilTag -->
+    <include file="$(find mobile_manip)/launch/include/apriltag_continuous_detection.launch">
+        <arg name="camera_name" value="/$(arg robot_name)/t265/fisheye1" />
+        <arg name="camera_frame" value="t265_fisheye1_optical_frame" />
+        <arg name="image_topic" value="image_raw" />
+    </include>
+
+</launch>

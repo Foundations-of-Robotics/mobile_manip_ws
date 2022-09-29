@@ -1,0 +1,47 @@
+<launch>
+  <arg name="motor_params" default="$(optenv DINGO_MOTOR_PARAMS base)" />
+
+  <group ns="mobile_manip/base">
+
+    <include file="$(find dingo_description)/launch/description.launch" />
+
+    <node pkg="rosserial_python" type="message_info_service.py" name="rosserial_message_info" />
+
+    <node pkg="dingo_base" type="dingo_node" name="dingo_node" output="screen">
+      <param name="dingo_omni" type="bool" value="$(optenv DINGO_OMNI 0)" />
+      <rosparam command="load" file="$(find dingo_base)/config/$(arg motor_params).yaml" />
+      <param name="wireless_interface" value="$(optenv DINGO_WIRELESS_INTERFACE wlp2s0)" />
+    </node>
+
+    <node pkg="imu_filter_madgwick" type="imu_filter_node" name="imu_filter">
+      <rosparam file="$(eval optenv('DINGO_MAG_CONFIG', find('dingo_base')+'/config/mag_config_default.yaml'))" />
+      <rosparam>
+        gain: 0.1
+        zeta: 0.001
+        publish_tf: false
+        use_magnetic_field_msg: true
+      </rosparam>
+    </node>
+
+    <!-- Differential controller and basic localization -->
+    <include file="$(find mobile_manip)/launch/include/dingo_control.launch" />
+
+    <!-- Teleoperation via joystick and rviz interactive markers -->
+    <include file="$(find dingo_control)/launch/teleop.launch" />
+
+    <!-- Diagnostic Aggregator for robot monitor usage -->
+    <group if="$(optenv DINGO_OMNI 0)">
+      <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator">
+        <rosparam command="load" file="$(find dingo_base)/config/diagnostic_analyzers_common.yaml" />
+        <rosparam command="load" file="$(find dingo_base)/config/diagnostic_analyzers_omni.yaml" />
+      </node>
+    </group>
+    <group unless="$(optenv DINGO_OMNI 0)">
+      <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator">
+        <rosparam command="load" file="$(find dingo_base)/config/diagnostic_analyzers_common.yaml" />
+        <rosparam command="load" file="$(find dingo_base)/config/diagnostic_analyzers_diff.yaml" />
+      </node>
+    </group>
+
+  </group>
+</launch>

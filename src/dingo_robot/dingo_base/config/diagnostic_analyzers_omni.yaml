@@ -1,0 +1,15 @@
+analyzers:
+  dingo:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: Dingo Base
+    analyzers:
+      motors:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: Motors
+        remove_prefix: 'dingo_node'
+        timeout: 5.0
+        expected: [
+          'dingo_node: Puma motor driver on: front_left_wheel with CAN ID (2)',
+          'dingo_node: Puma motor driver on: front_right_wheel with CAN ID (3)',
+          'dingo_node: Puma motor driver on: rear_left_wheel with CAN ID (4)',
+          'dingo_node: Puma motor driver on: rear_right_wheel with CAN ID (5)']

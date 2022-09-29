@@ -1,0 +1,11 @@
+<launch>
+    <arg name="config" default="$(optenv DINGO_CONFIG base)" />
+    <arg name="model" default="$(find dingo_description)/urdf/dingo-d.urdf.xacro" />
+  
+    <param name="robot_description"
+        command="$(find dingo_description)/scripts/env_run
+                 $(find dingo_description)/urdf/configs/$(arg config)
+                 $(find xacro)/xacro $(arg model)" />
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+</launch>

@@ -1,0 +1,207 @@
+<!--
+Launch driver components of Dingo's supported accessories.
+
+Be careful that the defaults in this file are kept aligned with those
+in the URDF. See dingo_description/urdf/accessories.urdf.xacro.
+-->
+<launch>
+  <!--
+    Primary LMS1xx-series LIDAR, typically front-facing.
+    By default this is a SICK LMS1xx but can be changed with the
+    DINGO_LASER_MODEL environment variable. Valid model designations are:
+    - lms1xx (default) :: SICK LMS1xx
+    - ust10            :: Hokuyo UST10
+  -->
+  <group if="$(optenv DINGO_LASER 0)">
+    <arg name="lidar_model" value="$(optenv DINGO_LASER_MODEL lms1xx)" />
+
+    <!-- LMS1xx node -->
+    <group if="$(eval arg('lidar_model') == 'lms1xx')">
+      <node pkg="lms1xx" name="lms1xx" type="LMS1xx_node">
+        <param name="host" value="$(optenv DINGO_LASER_HOST 192.168.131.20)" />
+        <param name="frame_id" value="$(optenv DINGO_LASER_MOUNT front)_laser" />
+        <remap from="scan" to="$(optenv DINGO_LASER_TOPIC front/scan)" />
+      </node>
+    </group>
+
+    <!-- UST10 node -->
+    <group if="$(eval arg('lidar_model') == 'ust10')">
+      <node pkg="urg_node" name="hokuyo" type="urg_node">
+        <param name="ip_address" value="$(optenv DINGO_LASER_HOST 192.168.131.20)" />
+        <param name="frame_id" value="$(optenv DINGO_LASER_MOUNT front)_laser" />
+        <remap from="scan" to="$(optenv DINGO_LASER_TOPIC front/scan)" />
+      </node>
+    </group>
+  </group>
+
+  <!--
+    Secondary 2D laser
+    Same config options as above, but with "_SECONDARY" in all env vars
+  -->
+  <group if="$(optenv DINGO_LASER_SECONDARY 0)">
+    <arg name="lidar2_model" value="$(optenv DINGO_LASER_SECONDARY_MODEL lms1xx)" />
+
+    <!-- LMS1xx node -->
+    <group if="$(eval arg('lidar2_model') == 'lms1xx')">
+      <node pkg="lms1xx" name="lms1xx" type="LMS1xx_node">
+        <param name="host" value="$(optenv DINGO_LASER_SECONDARY_HOST 192.168.131.21)" />
+        <param name="frame_id" value="$(optenv DINGO_LASER_SECONDARY_MOUNT rear)_laser" />
+        <remap from="scan" to="$(optenv DINGO_LASER_SECONDARY_TOPIC rear/scan)" />
+      </node>
+    </group>
+
+    <!-- UST10 node -->
+    <group if="$(eval arg('lidar2_model') == 'ust10')">
+      <node pkg="urg_node" name="hokuyo" type="urg_node">
+        <param name="ip_address" value="$(optenv DINGO_LASER_SECONDARY_HOST 192.168.131.21)" />
+        <param name="frame_id" value="$(optenv DINGO_LASER_SECONDARY_MOUNT rear)_laser" />
+        <remap from="scan" to="$(optenv DINGO_LASER_SECONDARY_TOPIC rear/scan)" />
+      </node>
+    </group>
+  </group>
+
+  <!--
+    Primary 3D laser
+    By default this is a Velodyne VLP16 but can be changed with the
+    DINGO_LASER_3D_MODEL environment variable. Valid model designations are:
+    - vlp16 (default)     :: Velodyne VLP-16
+  -->
+  <group if="$(optenv DINGO_LASER_3D 0)">
+    <arg name="lidar_3d_model" value="$(optenv DINGO_LASER_3D_MODEL vlp16)" />
+
+    <!-- VLP16 node -->
+    <group if="$(eval arg('lidar_3d_model') == 'vlp16')">
+      <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch">
+        <arg name="device_ip" value="$(optenv DINGO_LASER_3D_HOST 192.168.131.20)" />
+        <remap from="velodyne_points" to="$(optenv DINGO_LASER_3D_TOPIC front/points)" />
+      </include>
+    </group>
+  </group>
+
+  <!--
+    Primary Intel RealSense family camera.  By default this is a D435, but can be changed with the
+    DINGO_REALSENSE_MODEL environment variable. Valid model designations are:
+    - d435 (default)
+    - d435i
+    - d415
+    - d455
+    - l515
+  -->
+  <group if="$(optenv DINGO_REALSENSE 0)" ns="$(optenv DINGO_REALSENSE_TOPIC realsense)">
+    <arg name="rs_model" value="$(optenv DINGO_REALSENSE_MODEL d435)" />
+
+    <arg name="serial_no"           default=""/>
+    <arg name="usb_port_id"         default=""/>
+    <arg name="device_type"         default=""/>
+    <arg name="json_file_path"      default=""/>
+    <arg name="camera"              default="realsense"/>
+    <arg name="tf_prefix"           default="$(arg camera)"/>
+    <arg name="external_manager"    default="false"/>
+    <arg name="manager"             default="realsense2_camera_manager"/>
+    <arg name="base_frame_id"       default="$(optenv DINGO_REALSENSE_MOUNT front)_mount" />
+
+    <arg name="fisheye_width"       default="640"/>
+    <arg name="fisheye_height"      default="480"/>
+    <arg name="enable_fisheye"      default="true"/>
+
+    <arg name="depth_width"         default="640"/>
+    <arg name="depth_height"        default="480"/>
+    <arg name="enable_depth"        default="true"/>
+
+    <arg name="infra_width"         default="640"/>
+    <arg name="infra_height"        default="480"/>
+    <arg name="enable_infra"        default="true"/>
+    <arg name="enable_infra1"       default="true"/>
+    <arg name="enable_infra2"       default="true"/>
+
+    <arg name="color_width"         default="640"/>
+    <arg name="color_height"        default="480"/>
+    <arg name="enable_color"        default="true"/>
+
+    <arg name="fisheye_fps"         default="30"/>
+    <arg name="depth_fps"           default="30"/>
+    <arg name="infra_fps"           default="30"/>
+    <arg name="color_fps"           default="30"/>
+    <arg name="gyro_fps"            default="400"/>
+    <arg name="accel_fps"           default="250"/>
+    <arg name="enable_gyro"         default="true"/>
+    <arg name="enable_accel"        default="true"/>
+
+    <arg name="enable_pointcloud"         default="true "/>
+    <arg name="pointcloud_texture_stream" default="RS2_STREAM_COLOR"/>
+    <arg name="pointcloud_texture_index"  default="0"/>
+
+    <arg name="enable_sync"               default="false"/>
+    <arg name="align_depth"               default="false"/>
+
+    <arg name="publish_tf"                default="true"/>
+    <arg name="tf_publish_rate"           default="0"/>
+
+    <arg name="filters"                   default=""/>
+    <arg name="clip_distance"             default="-2"/>
+    <arg name="linear_accel_cov"          default="0.01"/>
+    <arg name="initial_reset"             default="false"/>
+    <arg name="unite_imu_method"          default=""/>
+    <arg name="topic_odom_in"             default="odom_in"/>
+    <arg name="calib_odom_file"           default=""/>
+    <arg name="publish_odom_tf"           default="true"/>
+    <arg name="allow_no_texture_points"   default="false"/>
+
+    <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+      <arg name="tf_prefix"                value="$(arg tf_prefix)"/>
+      <arg name="base_frame_id"            value="$(arg base_frame_id)"/>
+      <arg name="external_manager"         value="$(arg external_manager)"/>
+      <arg name="manager"                  value="$(arg manager)"/>
+      <arg name="serial_no"                value="$(arg serial_no)"/>
+      <arg name="usb_port_id"              value="$(arg usb_port_id)"/>
+      <arg name="device_type"              value="$(arg device_type)"/>
+      <arg name="json_file_path"           value="$(arg json_file_path)"/>
+
+      <arg name="enable_pointcloud"        value="$(arg enable_pointcloud)"/>
+      <arg name="pointcloud_texture_stream" value="$(arg pointcloud_texture_stream)"/>
+      <arg name="pointcloud_texture_index"  value="$(arg pointcloud_texture_index)"/>
+      <arg name="enable_sync"              value="$(arg enable_sync)"/>
+      <arg name="align_depth"              value="$(arg align_depth)"/>
+
+      <arg name="fisheye_width"            value="$(arg fisheye_width)"/>
+      <arg name="fisheye_height"           value="$(arg fisheye_height)"/>
+      <arg name="enable_fisheye"           value="$(arg enable_fisheye)"/>
+
+      <arg name="depth_width"              value="$(arg depth_width)"/>
+      <arg name="depth_height"             value="$(arg depth_height)"/>
+      <arg name="enable_depth"             value="$(arg enable_depth)"/>
+
+      <arg name="color_width"              value="$(arg color_width)"/>
+      <arg name="color_height"             value="$(arg color_height)"/>
+      <arg name="enable_color"             value="$(arg enable_color)"/>
+
+      <arg name="infra_width"              value="$(arg infra_width)"/>
+      <arg name="infra_height"             value="$(arg infra_height)"/>
+      <arg name="enable_infra"             value="$(arg enable_infra)"/>
+      <arg name="enable_infra1"            value="$(arg enable_infra1)"/>
+      <arg name="enable_infra2"            value="$(arg enable_infra2)"/>
+
+      <arg name="fisheye_fps"              value="$(arg fisheye_fps)"/>
+      <arg name="depth_fps"                value="$(arg depth_fps)"/>
+      <arg name="infra_fps"                value="$(arg infra_fps)"/>
+      <arg name="color_fps"                value="$(arg color_fps)"/>
+      <arg name="gyro_fps"                 value="$(arg gyro_fps)"/>
+      <arg name="accel_fps"                value="$(arg accel_fps)"/>
+      <arg name="enable_gyro"              value="$(arg enable_gyro)"/>
+      <arg name="enable_accel"             value="$(arg enable_accel)"/>
+
+      <arg name="publish_tf"               value="$(arg publish_tf)"/>
+      <arg name="tf_publish_rate"          value="$(arg tf_publish_rate)"/>
+
+      <arg name="filters"                  value="$(arg filters)"/>
+      <arg name="clip_distance"            value="$(arg clip_distance)"/>
+      <arg name="linear_accel_cov"         value="$(arg linear_accel_cov)"/>
+      <arg name="initial_reset"            value="$(arg initial_reset)"/>
+      <arg name="unite_imu_method"         value="$(arg unite_imu_method)"/>
+      <arg name="topic_odom_in"            value="$(arg topic_odom_in)"/>
+      <arg name="calib_odom_file"          value="$(arg calib_odom_file)"/>
+      <arg name="publish_odom_tf"          value="$(arg publish_odom_tf)"/>
+      <arg name="allow_no_texture_points"  value="$(arg allow_no_texture_points)"/>
+    </include>
+  </group>
+</launch>

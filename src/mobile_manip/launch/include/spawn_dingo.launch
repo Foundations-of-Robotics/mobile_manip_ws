@@ -1,0 +1,30 @@
+<launch>
+
+    <arg name="name" default="dingo"/>
+    <arg name="init_pose" default="-x 0 -y 0 -z 0.1"/>
+    <arg name="model" default="$(find dingo_description)/urdf/dingo-d.urdf.xacro" />
+    <arg name="use_state_estimation" default="true" />
+    <arg name="control_config" default="$(find mobile_manip)/config/dingo_control.yaml" />
+    <arg name="joystick" default="false" />
+
+    <!-- Load Dingo's description, controllers, and teleop nodes. -->
+    <include file="$(find mobile_manip)/launch/include/dingo_description.launch" >
+        <arg name="model" value="$(arg model)" />
+    </include>
+    <include file="$(find mobile_manip)/launch/include/dingo_control.launch" >
+        <arg name="config_file" value="$(arg control_config)" />
+    </include>
+    <include file="$(find mobile_manip)/launch/include/dingo_teleop.launch">
+        <arg name="joystick" value="$(arg joystick)"/>
+    </include>
+
+    <!-- Spawn Dingo -->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" 
+        args="-urdf -model $(arg name) -param robot_description $(arg init_pose)" />
+
+    <!-- Dingo State Estimation -->
+    <group if="$(arg use_state_estimation)">
+        <node name="dingo_state_estimation" pkg="mobile_manip" type="dingo_state_estimation.py" output="screen" />
+    </group>
+
+</launch>

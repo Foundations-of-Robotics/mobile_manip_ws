@@ -1,0 +1,5 @@
+<launch>
+
+  <node name="amcl_rviz" pkg="rviz" type="rviz" respawn="false" args="-d $(find mobile_manip)/rviz/amcl.rviz" output="screen"/>
+
+</launch>

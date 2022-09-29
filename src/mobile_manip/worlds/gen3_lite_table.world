@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+    <world name="default">
+
+        <!-- A global light source -->
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <!-- A ground plane -->
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+
+        <!-- Building with rooms and corridors -->
+        <include>
+            <pose>0.0 0.0 0.0 0.0 0.0 1.571</pose>
+            <uri>model://table</uri>
+        </include>
+
+        <gui fullscreen='0'>
+            <camera name='user_camera'>
+                <pose frame=''>3.22195 0.030979 2.10006 0 0.331642 3.12419</pose>
+                <view_controller>orbit</view_controller>
+                <projection_type>perspective</projection_type>
+            </camera>
+        </gui>
+
+    </world>
+</sdf>

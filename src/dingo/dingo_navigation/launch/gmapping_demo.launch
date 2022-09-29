@@ -1,0 +1,12 @@
+<launch>
+  <arg name="scan_topic" default="$(eval optenv('DINGO_LASER_TOPIC', 'front/scan'))" />
+
+  <!--- Run gmapping -->
+  <include file="$(dirname)/../launch/include/gmapping.launch">
+    <arg name="scan_topic" value="$(arg scan_topic)" />
+  </include>
+
+  <!--- Run Move Base -->
+  <include file="$(dirname)/../launch/include/move_base.launch" />
+
+</launch>

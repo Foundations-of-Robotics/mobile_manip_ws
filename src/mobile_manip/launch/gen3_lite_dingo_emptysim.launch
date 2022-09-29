@@ -1,0 +1,93 @@
+<launch>
+
+    <arg name="use_sim_time" default="true" />
+    <arg name="gui" default="true" />
+    <arg name="headless" default="false" />
+    <arg name="robot_name" default="mobile_manip" />
+    <arg name="world_name" default="$(find mobile_manip)/worlds/dingo_arena.world" />
+
+    <!-- Robot start point -->
+    <arg name="start_x_gz" default="0" />
+    <arg name="start_y_gz" default="0" />
+
+    <!-- Launch Gazebo with the specified world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="debug" value="false" />
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="use_sim_time" value="$(arg use_sim_time)" />
+        <arg name="headless" value="$(arg headless)" />
+        <arg name="world_name" value="$(arg world_name)" />
+        <arg name="paused" value="true" />
+    </include>
+
+    <!-- node name="laser_scan_publisher" pkg="mobile_manip" type="laser_scan_publisher.py" output="screen" /-->
+    <node name="depthimage_to_laserscan" pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" >
+      <remap from="image" to="/$(arg robot_name)/d435i/depth/image_rect_raw"/>
+      <remap from="camera_info" to="/mobile_manip/d435i/depth/camera_info"/>
+      <param name="output_frame_id" value="d435i_depth_frame"/>
+    </node>
+
+    <group ns="$(arg robot_name)"> <!-- /base -->
+        <!-- Spawn the robot -->
+        <include file="$(find mobile_manip)/launch/include/spawn_kortex_robot.launch">
+            <arg name="model_urdf" value="$(find mobile_manip)/urdf/dingo_gen3_lite.urdf.xacro"/>
+            <arg name="model_srdf" value="$(find mobile_manip)/urdf/dingo_gen3_lite.srdf.xacro"/>
+            <arg name="start_gazebo" value="false"/>
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="gazebo_gui"   value ="$(arg gui)"/>
+            <arg name="start_rviz" value="false"/>
+            <arg name="arm" value="gen3_lite"/>
+            <arg name="prefix" value="arm_"/>
+            <!-- <arg name="x0" value="-7.44"/>
+            <arg name="y0" value="1.0"/>
+            <arg name="z0" value="0.015"/> -->
+            <arg name="x0" value="$(arg start_x_gz)"/>
+            <arg name="y0" value="$(arg start_y_gz)"/>
+            <arg name="z0" value="0.015"/>
+            <arg name="yaw0" value="0"/>
+        </include>
+        <!-- Load Dingo controllers -->
+        <node pkg="twist_mux" type="twist_mux" name="twist_mux">
+            <rosparam command="load" file="$(find dingo_control)/config/twist_mux.yaml" />
+            <remap from="cmd_vel_out" to="dingo_velocity_controller/cmd_vel"/>
+        </node>
+        <include file="$(find mobile_manip)/launch/include/dingo_teleop.launch">
+            <arg name="joystick" value="false"/>
+        </include>
+
+        <!-- Dingo State Estimation -->
+        <!-- <node name="dingo_state_estimation" pkg="mobile_manip" type="dingo_state_estimation.py" output="screen" /> -->
+    </group>
+
+    <!-- AprilTag -->
+    <include file="$(find mobile_manip)/launch/include/apriltag_continuous_detection.launch">
+        <arg name="camera_name" value="/$(arg robot_name)/t265/fisheye1" />
+        <arg name="camera_frame" value="t265_fisheye1_optical_frame" />
+        <arg name="image_topic" value="image_raw" />
+    </include>
+
+    <!-- Transform between t265 and d435i -->
+    <node pkg="tf" type="static_transform_publisher" name="t265_to_d400" args="-0.0133 0.008101 0.029705 0 0 0 /t265/t265_pose_frame /d435i_depth_frame 100"/>
+
+    <!-- Robot namespace -->
+    <arg name="start_delay_seconds" default="14"/>
+
+    <!-- Launch the example in that namespace-->
+    <node name="moveit_gen3lite" pkg="mobile_manip" type="move_it_trajectories.py" ns="$(arg robot_name)" output="screen" launch-prefix="bash -c 'sleep $(arg start_delay_seconds); $0 $@' "/>
+
+    <!-- Run the map server -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find mobile_manip)/maps/a2230_map_closed.yaml" />
+
+    <!--- Run AMCL -->
+    <include file="$(find mobile_manip)/launch/include/amcl.launch">
+        <arg name="initial_pose_x" value="$(arg start_x_gz)" />
+        <arg name="initial_pose_y" value="$(arg start_y_gz)" />
+    </include>
+    <!--- For Jupyter-ROS -->
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch">
+        <arg name="port" value="$(optenv ROSBRIDGE_PORT 9090)"/>
+    </include>
+	<node pkg="tf2_web_republisher" type="tf2_web_republisher" name="tf2_web_republisher" />
+
+
+</launch>
