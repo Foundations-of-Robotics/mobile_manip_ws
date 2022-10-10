@@ -11,16 +11,16 @@ We made a docker image (book_simulations) containing everything needed to comple
 * Access to root privileges
 * wget : `sudo apt install wget`
 
-### Option 1 : Downloading the image
+### Option 1 (Recommended) : Downloading the image
 
 The steps to load the pre-built image are the following : 
 
 1. Navigate to a folder you want to use as a working directory.
 
-2. Download and execute the build script 
-    - `wget (insert download script url)`
-    - `sudo chmod +x download_build.sh`
-    - `sudo ./download_build.sh`
+2. Download and execute the download script 
+    - `wget https://raw.githubusercontent.com/Foundations-of-Robotics/mobile_manip_ws/master/docker/setup/setup_download.sh`
+    - `sudo chmod +x setup_download.sh`
+    - `sudo ./setup_download.sh`
 
 ### Option 2 : Building the image
 
@@ -29,7 +29,7 @@ The steps to build the image from scratch are the following :
 1. Navigate to a folder you want to use as a working directory.
 
 2. Download and execute the build script 
-    - `wget (insert build script url)`
+    - `wget https://raw.githubusercontent.com/Foundations-of-Robotics/mobile_manip_ws/master/docker/setup/setup_build.sh`
     - `sudo chmod +x setup_build.sh`
     - `sudo ./setup_build.sh`
 
@@ -44,7 +44,7 @@ All the robotic simulations are executed from inside the (book_simulations) cont
 ### Starting / Stoping the book_simulations container
 
 1. From your work directory, go to the folder containing the docker scripts
-    - `cd robot_manip_ws/docker`
+    - `cd mobile_manip_ws/docker`
 
 2. Start or Stop the containers
     - To start the container : `./set_container_state.sh 1`
@@ -59,7 +59,7 @@ All the robotic simulations are executed from inside the (book_simulations) cont
 There is a launch script available for all 4 simulations covered in the book. **Note that only one simulation can run at a time**. 
 
 1. From your work directory, go to the folder containing the docker scripts
-    - `cd robot_manip_ws/docker`
+    - `cd mobile_manip_ws/docker`
 
 2. Launch one of the simulation scripts
     * `./dingo_arenasim.sh`

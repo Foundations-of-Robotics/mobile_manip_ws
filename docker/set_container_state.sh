@@ -2,7 +2,7 @@
 # Start and stop the (book_simulations) docker container
 #
 # Requirements:
-#   This script needs to be executed from the /robot_manip_ws/docker folder
+#   This script needs to be executed from the /mobile_manip_ws/docker folder
 #
 # Usage: 
 #   ./set_container_state.sh 0 -> stops the container

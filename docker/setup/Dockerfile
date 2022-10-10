@@ -1,14 +1,14 @@
 FROM osrf/ros:noetic-desktop-full
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
  
-WORKDIR /robot_manip_ws
-COPY repo_files/ /robot_manip_ws/
-COPY ./entry_point.sh/ /robot_manip_ws/
+WORKDIR /mobile_manip_ws
+COPY repo_files/ /mobile_manip_ws/
+COPY ./entry_point.sh/ /mobile_manip_ws/
 
 RUN apt-get update
 RUN apt-get install -y git curl wget xauth
 
-# installing essential requirements (based on : https://git.initrobots.ca/Nerea/robot_manip_ws/-/blob/noetic_docker/doc/install.md)
+# installing essential requirements (based on : https://github.com/Foundations-of-Robotics/mobile_manip_ws/blob/master/doc/install.md)
 
 # installing realsense-ros (most likely the ROS package should be sufficent)
 RUN apt-get install -y ros-noetic-realsense2-camera
@@ -28,15 +28,15 @@ RUN python3 -m pip install --upgrade numpy
 
 # installing dependencies + building mobile_manip_ws
 RUN rosdep install --from-paths src --ignore-src -y
-RUN bash -c 'source scripts/add_remotes.sh && source /opt/ros/noetic/setup.bash && catkin_make'
+RUN bash -c 'source /opt/ros/noetic/setup.bash && catkin_make'
 
 # defining required env variables + writing to .bashrc
 RUN echo "source /opt/ros/noetic/setup.sh" >> ~/.bashrc
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
-RUN echo "source /robot_manip_ws/devel/setup.sh" >> ~/.bashrc
-RUN echo "source /robot_manip_ws/devel/setup.bash" >> ~/.bashrc
+RUN echo "source /mobile_manip_ws/devel/setup.sh" >> ~/.bashrc
+RUN echo "source /mobile_manip_ws/devel/setup.bash" >> ~/.bashrc
 
-# installing and configuring the Gazebo web (browser-based) for visualization (based on : https://git.initrobots.ca/Nerea/robot_manip_ws/-/blob/noetic_docker/doc/install_gzweb.md)
+# installing and configuring the Gazebo web (browser-based) for visualization (based on : https://github.com/Foundations-of-Robotics/mobile_manip_ws/blob/master/doc/install_gzweb.md)
 
 # setting up python 2 for the gazebo setup steps
 RUN apt install -y python2
@@ -55,7 +55,7 @@ RUN git clone https://github.com/osrf/gzweb
 RUN bash -c 'source ~/.nvm/nvm.sh && export GAZEBO_DIR=$(ls /usr/share/ | grep "gazebo-") && source /usr/share/$GAZEBO_DIR/setup.sh && ./gzweb/deploy.sh -m'
 
 # copying the models specific to the lab environment, and running the installer again
-RUN bash -c 'source /opt/ros/noetic/setup.sh && source /robot_manip_ws/devel/setup.sh &&\
+RUN bash -c 'source /opt/ros/noetic/setup.sh && source /mobile_manip_ws/devel/setup.sh &&\
 cp -r `rospack find dingo_description` gzweb/http/client/assets/ &&\
 cp -r `rospack find kortex_description`/arms/gen3_lite/6dof gzweb/http/client/assets/ &&\
 cp -r `rospack find kortex_description`/grippers/gen3_lite_2f gzweb/http/client/assets/ &&\
