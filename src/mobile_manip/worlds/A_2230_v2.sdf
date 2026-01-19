@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='ASCII'?>
+<sdf version='1.7'>
+  <world name='a2230_v2'>
+    <physics type="ode">
+      <max_step_size>0.003</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <gravity>0 0 -9.8</gravity>
+    </physics>
+    <plugin name='gz::sim::systems::Physics' filename='libgz-sim-physics-system.so'/>
+    <plugin name='gz::sim::systems::UserCommands' filename='libgz-sim-user-commands-system.so'/>
+    <plugin name='gz::sim::systems::SceneBroadcaster' filename='libgz-sim-scene-broadcaster-system.so'/>
+    <plugin name="gz::sim::systems::Sensors" filename="libgz-sim-sensors-system.so">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin name="gz::sim::systems::Imu" filename="libgz-sim-imu-system.so"/>
+    <!-- plugin name="gz::sim::systems::NavSat" filename="libgz-sim-navsat-system.so"/ -->
+
+    <scene>
+      <ambient>1 1 1 1</ambient>
+      <background>0.3 0.7 0.9 1</background>
+      <shadows>0</shadows>
+      <grid>false</grid>
+    </scene>
+
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <world_frame_orientation>ENU</world_frame_orientation>
+      <latitude_deg>-22.986687</latitude_deg>
+      <longitude_deg>-43.202501</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+       <!-- A global light source 
+      <include>
+          <uri>package://mobile_manip/models/sun</uri>
+      </include>-->
+
+      <!-- Machine -->
+        <model name="machine">
+        <include>
+            <pose>1.0 -2.6 0.0 0.0 1.57 0.0</pose>
+            <scale>0.8 0.8 0.8</scale>
+            <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Cardboard box</uri>
+        </include>
+        </model>
+        <model name="piece">
+        <include>
+            <pose>1.0 -2.6 0.51 0.0 0 0.0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/myoan/models/Movable green coke can</uri>
+        </include>
+        </model>
+        <include>
+            <pose>1.0 -2.4 0.38 0.0 -1.57 -1.57</pose>
+            <uri>package://mobile_manip/models/april_tags/Apriltag36_11_00011</uri>
+        </include>
+
+        <!-- Table d'echange -->
+        <model name="table">
+        <include>
+            <pose>1.0 1.0 0.0 0.0 1.57 0.0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Cardboard box</uri>
+        </include>
+        </model>
+        <include>
+            <pose>1.0 0.8 0.38 0.0 -1.57 1.57</pose>
+            <uri>package://mobile_manip/models/april_tags/Apriltag36_11_00012</uri>
+        </include>
+        <include>
+            <pose>1.0 1.2 0.38 0.0 -1.57 -1.57</pose>
+            <uri>package://mobile_manip/models/april_tags/Apriltag36_11_00013</uri>
+        </include>
+
+
+        <!-- Bac de traitement -->
+        <model name="bac">
+        <include>
+            <pose>1.0 5.0 0.0 0.0 1.57 0.0</pose>
+            <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Cardboard box</uri>
+        </include>
+        </model>
+        <include>
+            <pose>1.0 4.8 0.38 0.0 -1.57 1.57</pose>
+            <uri>package://mobile_manip/models/april_tags/Apriltag36_11_00014</uri>
+        </include>
+        <model name="bowl">
+            <pose>1.0 5.0 0.51 0 0 0</pose>
+            <link name="link">
+            <visual name="vis">
+                <geometry>
+                <mesh>
+                    <uri>https://fuel.gazebosim.org/1.0/GoogleResearch/models/Cole_Hardware_Bowl_Scirocco_YellowBlue</uri>
+                    <scale>1.8 1.8 1.8</scale>
+                </mesh>
+                </geometry>
+            </visual>
+            <collision name="col">
+                <geometry>
+                <mesh>
+                    <uri>https://fuel.gazebosim.org/1.0/GoogleResearch/models/Cole_Hardware_Bowl_Scirocco_YellowBlue</uri>
+                    <scale>1.8 1.8 1.8</scale>
+                </mesh>
+                </geometry>
+            </collision>
+            </link>
+        </model>
+
+      <model name="global_offset_group">
+        <pose>-5.19 1.56 0 0 0 0</pose>
+
+
+          <!-- A ground plane -->
+          <include>
+            <uri>package://mobile_manip/models/my_ground_plane</uri>
+          </include>
+
+          <!-- Building with rooms and corridors -->
+          <include>
+              <pose>0.0 0.0 0.0 0.0 0.0 0.0</pose>
+              <uri>package://mobile_manip/models/A2230_arena</uri>
+          </include>
+
+          <!-- Dummy tag for the tag on the door to have the proper visual -->
+          <include>
+              <pose>0 0 -5 0 0 0</pose>
+              <uri>package://mobile_manip/models/april_tags/Apriltag36_11_00002</uri>
+          </include>
+        </model>
+
+        <gui fullscreen='1'>
+            <camera name='user_camera'>
+                <pose>11.0 -6.0 11.6 0.0 0.6 2.5</pose>
+                <view_controller>orbit</view_controller>
+                <projection_type>perspective</projection_type>
+            </camera>
+        </gui>
+    </world>
+</sdf>

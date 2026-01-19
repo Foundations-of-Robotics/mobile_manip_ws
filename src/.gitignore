@@ -1,0 +1,8 @@
+sensors
+manipulators
+platform
+project*
+
+robot.srdf
+robot.srdf.xacro
+robot.urdf.xacro

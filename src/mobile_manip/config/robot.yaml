@@ -1,0 +1,98 @@
+serial_number: dd100-0001
+version: 0
+system:
+  username: admin_mec
+  hosts:
+    - hostname: mec-a2230-01
+      ip: 192.168.0.81
+  ros2:
+    namespace: mobile_manip
+    domain_id: 0
+    middleware:
+      implementation: rmw_fastrtps_cpp
+    workspaces: []
+platform:
+  controller: ps4
+  battery:
+    model: TLV1222
+    configuration: S1P1
+  enable_foxglove_bridge: true  #do not seem to work on humble...
+  attachments: {}
+  extras:
+    launch: [] #do not seem to work on humble...
+    urdf: 
+        package: doody_description
+        path: urdf/turret.urdf.xacro
+drivetrain:
+  control: diff_fwd
+  wheels:
+    front: indoor
+    rear: caster
+links:
+  mesh: []
+  box: []
+  cylinder: []
+  frame: []
+  sphere: []
+mounts:
+  bracket: []
+  fath_pivot: []
+  riser: []
+  sick: []
+  post: []
+  disk: []
+sensors:
+  camera:
+    - model: intel_realsense
+      urdf_enabled: true
+      launch_enabled: true
+      parent: d435_mount_link
+      xyz:
+        - 0.0
+        - 0.0
+        - 0.0
+      rpy:
+        - 0.0
+        - 0.0
+        - 0.0
+      ros_parameters:
+        intel_realsense:
+          camera_name: d435
+          device_type: d435i
+          serial_no: '938422072828'
+          enable_color: true
+          rgb_camera.color_profile: 640,480,30
+          enable_depth: true
+          depth_module.depth_profile: 640,480,15
+          pointcloud.enable: true
+  imu:
+    - model: microstrain_imu
+      urdf_enabled: true
+      launch_enabled: true
+      parent: base_link
+      xyz: [0.0, 0.0, 0.0]
+      rpy: [0.0, 0.0, 0.0]
+      ros_parameters:
+        microstrain_inertial_driver:
+          imu_frame_id: imu_0_link
+          port: /dev/microstrain_main
+          use_enu_frame: true
+
+manipulators:
+ moveit:
+   enable: false
+ arms:
+   - model: kinova_gen3_lite
+     parent: gen3_mount_link
+     xyz:
+       - 0.0
+       - 0.0
+       - 0.0
+     rpy:
+       - 0.0
+       - 0.0
+       - 0.0
+     ip: 192.168.1.10
+     port: 10000
+     gripper:
+       model: kinova_2f_lite

@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <actor name="actor1">
+     <skin>
+        <filename>package://mobile_manip/models/Walking actor 1/meshes/walk.dae</filename>
+        <scale>1.0</scale>
+     </skin>
+     <pose>-3.989060 -4.870654 0.000000 0.000000 0.000000 1.570000</pose>
+     <animation name="walking">
+        <filename>package://mobile_manip/models/Walking actor 1/meshes/walk.dae</filename>
+        <scale>1.000000</scale>
+        <interpolate_x>true</interpolate_x>
+     </animation>
+     <script>
+        <loop>true</loop>
+        <delay_start>0.000000</delay_start>
+        <auto_start>true</auto_start>
+        <trajectory id="0" type="walking" tension="0">
+
+           <waypoint><time>25.0</time><pose>-3.989060 -4.870654 0.000000 0.000000 0.000000 1.570000</pose></waypoint>
+           <waypoint><time>26.0</time><pose>-3.989060 -4.870654 0.000000 0.000000 0.000000 -2.000000</pose></waypoint>
+           <waypoint><time>27.7</time><pose>-4.976510 -6.376990 0.000000 0.000000 0.000000 -2.200000</pose></waypoint>
+           <waypoint><time>29.2</time><pose>-6.026134 -7.500000 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>54.2</time><pose>-6.026134 -7.500000 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>55.2</time><pose>-6.026134 -7.500000 0.000000 0.000000 0.000000 1.570000</pose></waypoint>
+           <waypoint><time>55.8</time><pose>-6.341007 -6.978400 0.000000 0.000000 0.000000 2.500000</pose></waypoint>
+           <waypoint><time>56.3</time><pose>-6.700000 -6.500000 0.000000 0.000000 0.000000 3.140000</pose></waypoint>
+           <waypoint><time>56.9</time><pose>-7.250000 -6.750000 0.000000 0.000000 0.000000 -2.600000</pose></waypoint>
+           <waypoint><time>58.6</time><pose>-8.857129 -7.496964 0.000000 0.000000 0.000000 -2.500000</pose></waypoint>
+           <waypoint><time>60.9</time><pose>-11.045110 -8.500000 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>85.9</time><pose>-11.045110 -8.500000 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>86.9</time><pose>-11.045110 -8.500000 0.000000 0.000000 0.000000 2.300000</pose></waypoint>
+           <waypoint><time>88.1</time><pose>-11.949840 -7.529149 0.000000 0.000000 0.000000 2.600000</pose></waypoint>
+           <waypoint><time>89.3</time><pose>-12.900000 -6.724779 0.000000 0.000000 0.000000 3.140000</pose></waypoint>
+           <waypoint><time>114.3</time><pose>-12.900000 -6.724779 0.000000 0.000000 0.000000 3.140000</pose></waypoint>
+           <waypoint><time>115.3</time><pose>-12.900000 -6.724779 0.000000 0.000000 0.000000 1.300000</pose></waypoint>
+           <waypoint><time>117.1</time><pose>-12.217210 -5.043848 0.000000 0.000000 0.000000 1.100000</pose></waypoint>
+           <waypoint><time>119.0</time><pose>-11.314220 -3.198180 0.000000 0.000000 0.000000 0.900000</pose></waypoint>
+           <waypoint><time>119.7</time><pose>-10.773150 -2.671964 0.000000 0.000000 0.000000 0.000000</pose></waypoint>
+           <waypoint><time>120.7</time><pose>-9.807614 -2.800000 0.000000 0.000000 0.000000 -0.300000</pose></waypoint>
+           <waypoint><time>121.6</time><pose>-8.785225 -2.800000 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>146.6</time><pose>-8.785225 -2.800000 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>171.6</time><pose>-8.785225 -2.800000 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>174.1</time><pose>-6.998344 -1.006142 0.000000 0.000000 0.000000 0.900000</pose></waypoint>
+           <waypoint><time>176.1</time><pose>-5.464012 0.500000 0.000000 0.000000 0.000000 1.570000</pose></waypoint>
+           <waypoint><time>201.1</time><pose>-5.464012 0.500000 0.000000 0.000000 0.000000 1.570000</pose></waypoint>
+           <waypoint><time>202.1</time><pose>-5.464012 0.500000 0.000000 0.000000 0.000000 -0.780000</pose></waypoint>
+           <waypoint><time>204.1</time><pose>-3.861057 -0.913328 0.000000 0.000000 0.000000 -0.780000</pose></waypoint>
+           <waypoint><time>206.5</time><pose>-2.720488 -3.084078 0.000000 0.000000 0.000000 -1.570000</pose></waypoint>
+           <waypoint><time>207.7</time><pose>-2.300000 -4.298609 0.000000 0.000000 0.000000 -1.900000</pose></waypoint>
+           <waypoint><time>208.3</time><pose>-2.800000 -4.750000 0.000000 0.000000 0.000000 -2.350000</pose></waypoint>
+           <waypoint><time>208.7</time><pose>-3.050678 -5.000000 0.000000 0.000000 0.000000 -3.140000</pose></waypoint>
+           <waypoint><time>209.6</time><pose>-3.989060 -4.870654 0.000000 0.000000 0.000000 1.570000</pose></waypoint>
+
+        </trajectory>
+     </script>
+  </actor>
+</sdf>
