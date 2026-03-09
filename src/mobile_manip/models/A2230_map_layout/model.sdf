@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.7">
+  <model name="A2230_map_layout">
+    <static>true</static>
+    <link name="floor_1">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/floor_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>0.1 0.1 0.1</specular>
+          <pbr>
+            <metal>
+              <metalness>0.0</metalness>
+              <albedo_map>model://A2230_map_layout/meshes/gray_flooring.png</albedo_map>
+            </metal>
+          </pbr>
+          <script>
+            <uri>model://A2230_map_layout/meshes/</uri>
+            <name>floor_1_Diffuse</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/floor_1.obj</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name="ceiling_1">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/ceiling_1.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>0.1 0.1 0.1</specular>
+          <pbr>
+            <metal>
+              <metalness>0.0</metalness>
+              <albedo_map>model://A2230_map_layout/meshes/gray_flooring.png</albedo_map>
+            </metal>
+          </pbr>
+          <script>
+            <uri>model://A2230_map_layout/meshes/</uri>
+            <name>ceiling_1_Diffuse</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/ceiling_1.obj</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name="floor_2">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/floor_2.obj</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>0.1 0.1 0.1</specular>
+          <pbr>
+            <metal>
+              <metalness>0.0</metalness>
+              <albedo_map>model://A2230_map_layout/meshes/concrete3.png</albedo_map>
+            </metal>
+          </pbr>
+          <script>
+            <uri>model://A2230_map_layout/meshes/</uri>
+            <name>floor_2_Diffuse</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/floor_2.obj</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+        </surface>
+      </collision>
+    </link>
+    <link name="wall_1">
+      <visual name="wall_1">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/wall_1.obj</uri>
+          </mesh>
+        </geometry>
+        <transparency>0.0</transparency>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>0.1 0.1 0.1</specular>
+          <pbr>
+            <metal>
+              <metalness>0.0</metalness>
+              <albedo_map>model://A2230_map_layout/meshes/white_brick.png</albedo_map>
+            </metal>
+          </pbr>
+          <script>
+            <uri>model://A2230_map_layout/meshes/</uri>
+            <name>wall_1_Diffuse</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/wall_1.obj</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+        </surface>
+      </collision>
+      <pose>23.92924920426243 -21.97584710088617 0 0 0 0</pose>
+    </link>
+    <link name="wall_2">
+      <visual name="wall_2">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/wall_2.obj</uri>
+          </mesh>
+        </geometry>
+        <transparency>0.0</transparency>
+        <material>
+          <diffuse>1.0 1.0 1.0</diffuse>
+          <specular>0.1 0.1 0.1</specular>
+          <pbr>
+            <metal>
+              <metalness>0.0</metalness>
+              <albedo_map>model://A2230_map_layout/meshes/default.png</albedo_map>
+            </metal>
+          </pbr>
+          <script>
+            <uri>model://A2230_map_layout/meshes/</uri>
+            <name>wall_2_Diffuse</name>
+          </script>
+        </material>
+      </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://A2230_map_layout/meshes/wall_2.obj</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <collide_bitmask>0x01</collide_bitmask>
+          </contact>
+        </surface>
+      </collision>
+      <pose>8.58452619861297 -30.84328475728172 0 0 0 0</pose>
+    </link>
+  </model>
+</sdf>

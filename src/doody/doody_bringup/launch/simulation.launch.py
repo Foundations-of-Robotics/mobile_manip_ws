@@ -17,15 +17,20 @@
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, GroupAction
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
+from launch.conditions import IfCondition, UnlessCondition
 
 
 ARGUMENTS = [
     DeclareLaunchArgument('rviz', default_value='false',
                           choices=['true', 'false'], description='Start rviz.'),
+    DeclareLaunchArgument('headless', default_value='false',
+                          choices=['true', 'false'], description='Start Gazebo headless.'),
+    DeclareLaunchArgument('nogui', default_value='false',
+                          choices=['true', 'false'], description='Start Gazebo without GUI.'),
     DeclareLaunchArgument('world', default_value='warehouse',
                           description='Gazebo World'),
     DeclareLaunchArgument('setup_path',
@@ -54,18 +59,46 @@ def generate_launch_description():
         'clearpath_gz')
     pkg_doody_bringup = get_package_share_directory(
         'doody_bringup')
+    
+    nogui = LaunchConfiguration('nogui')
+    headless = LaunchConfiguration('headless')
 
-    # Paths
+    # Paths (conditional)
     gz_sim_launch = PathJoinSubstitution(
+        [pkg_clearpath_gz, 'launch', 'gz_sim.launch.py'])
+    gz_sim_launch_nogui = PathJoinSubstitution(
+        [pkg_doody_bringup, 'launch', 'gz_sim_nogui.launch.py'])
+    gz_sim_launch_headless = PathJoinSubstitution(
         [pkg_doody_bringup, 'launch', 'gz_sim_headless.launch.py'])
     robot_spawn_launch = PathJoinSubstitution(
         [pkg_clearpath_gz, 'launch', 'robot_spawn.launch.py'])
 
-    gz_sim = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([gz_sim_launch]),
+    gz_sim = GroupAction(
+        actions=[
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([gz_sim_launch]),
+                launch_arguments=[
+                    ('world', LaunchConfiguration('world'))
+                ],
+                condition=UnlessCondition(LaunchConfiguration('headless'))
+            )
+        ],
+        condition=UnlessCondition(LaunchConfiguration('nogui'))
+    )
+    # Add second condition to the group for headless
+    gz_sim_ng = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([gz_sim_launch_nogui]),
         launch_arguments=[
             ('world', LaunchConfiguration('world'))
-        ]
+        ],
+        condition=IfCondition(LaunchConfiguration('nogui'))
+    )
+    gz_sim_hl = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([gz_sim_launch_headless]),
+        launch_arguments=[
+            ('world', LaunchConfiguration('world'))
+        ],
+        condition=IfCondition(LaunchConfiguration('headless'))
     )
 
     robot_spawn = IncludeLaunchDescription(
@@ -84,6 +117,8 @@ def generate_launch_description():
 
     # Create launch description and add actions
     ld = LaunchDescription(ARGUMENTS)
+    ld.add_action(gz_sim_hl)
+    ld.add_action(gz_sim_ng)
     ld.add_action(gz_sim)
     ld.add_action(robot_spawn)
     return ld

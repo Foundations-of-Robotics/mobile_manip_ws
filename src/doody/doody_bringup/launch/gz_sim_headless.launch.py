@@ -57,6 +57,8 @@ def gz_launch(context, *args, **kwargs):
     auto_start = LaunchConfiguration('auto_start').perform(context)
     if (auto_start == 'true'):
         auto_start_option = ' -r'
+        
+    print("LAUNCHING HEADLESS GAZERBO FOR REMOTE WORK --------- !")
 
     # Gazebo Simulator
     gz_sim = IncludeLaunchDescription(
@@ -65,9 +67,7 @@ def gz_launch(context, *args, **kwargs):
             ('gz_args', [LaunchConfiguration('world'),
                          '.sdf',
                          auto_start_option,
-                         ' -v 4 -s --headless-rendering',
-                         ' --gui-config ',
-                         gui_config])
+                         ' -v 4 -s --headless-rendering'])
         ]
     )
 

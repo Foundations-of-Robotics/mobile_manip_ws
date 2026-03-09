@@ -1,0 +1,26 @@
+apriltag:                 # node name
+  ros__parameters:
+    # setup (defaults)
+    image_transport: raw  # image format: "raw" or "compressed"
+    family: 36h11         # tag family name: 16h5, 25h9, 36h11
+    size: 0.21             # default tag edge size in meter
+    profile: false        # print profiling information to stdout
+
+    # tuning of detection (defaults)
+    max_hamming: 0        # maximum allowed hamming distance (corrected bits)
+    detector:
+      threads: 1          # number of threads
+      decimate: 2.0       # decimate resolution for quad detection
+      blur: 0.0           # sigma of Gaussian blur for quad detection
+      refine: true           # snap to strong gradients
+      sharpening: 0.25    # sharpening of decoded images
+      debug: false            # write additional debugging images to current working directory
+
+    pose_estimation_method: "pnp" # method for estimating the tag pose
+
+    # (optional) list of tags
+    # If defined, 'frames' and 'sizes' must have the same length as 'ids'.
+    tag:
+      ids:    [0,1,2,3,4,5,6]         # tag IDs for which to publish transform
+      frames: [tag0,tag1,tag2,tag3,tag4,tag5,tag6]   # frame names
+      sizes:  [0.21,0.21,0.21,0.21,0.21,0.21,0.21]     # tag-specific edge size, overrides the default 'size'

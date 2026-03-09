@@ -1,0 +1,8 @@
+image: a2230_map_closed.png
+resolution: 0.020000
+#origin: [-23.70000, -22.60000, 0.000000]
+#origin: [-28.89400, -21.04200, 0.000000]
+origin: [-29.9, -22.65, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196

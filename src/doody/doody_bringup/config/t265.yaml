@@ -1,15 +1,10 @@
 - ros_topic_name: t265/fisheye1/camera_info
-  gz_topic_name: /mobile_manip/sensors/t265/fisheye1
+  gz_topic_name: /mobile_manip/sensors/t265/fisheye1/camera_info
   ros_type_name: sensor_msgs/msg/CameraInfo
-  gz_type_name: ignition.msgs.CameraInfo
-  direction: GZ_TO_ROS
-- ros_topic_name: t265/fisheye2/camera_info
-  gz_topic_name: /mobile_manip/sensors/t265/fisheye2
-  ros_type_name: sensor_msgs/msg/CameraInfo
-  gz_type_name: ignition.msgs.CameraInfo
+  gz_type_name: gz.msgs.CameraInfo
   direction: GZ_TO_ROS
 - ros_topic_name: gt
   gz_topic_name: /model/mobile_manip/robot/pose
   ros_type_name: geometry_msgs/msg/Pose
-  gz_type_name: ignition.msgs.Pose
+  gz_type_name: gz.msgs.Pose
   direction: GZ_TO_ROS

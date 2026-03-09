@@ -19,7 +19,7 @@ sudo apt-get install -y build-essential bc flex bison libssl-dev zstd ros-humble
 
 sudo rosdep update && sudo rosdep install --from-paths src --ignore-src -y
 sudo chown -R $(whoami) /home/ws/ && . /opt/ros/humble/setup.sh
-colcon build --symlink-install
+src/build.sh
 source install/setup.bash
 ```
 

@@ -6,12 +6,22 @@
   <description>TODO: Package description</description>
   <maintainer email="administrator@todo.todo">administrator</maintainer>
   <license>TODO: License declaration</license>
+  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
-
+  <build_depend>geometry_msgs</build_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <build_depend>std_msgs</build_depend>
+  <exec_depend>std_msgs</exec_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <depend>rclpy</depend>
+  <depend>ros_gz</depend>
+  <depend>foxglove_bridge</depend>
+  <depend>nav2_map_server</depend>
+  <depend>apriltag_ros</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>pinocchio</depend>
   <exec_depend>launch</exec_depend>
 
   <export>

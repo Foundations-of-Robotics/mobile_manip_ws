@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="206.86482mm"
+   height="33.605175mm"
+   viewBox="0 0 206.86482 33.605175"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (fcd0343856, 2026-01-01)"
+   sodipodi:docname="ma_cmd_vel.svg"
+   inkscape:export-filename="ma_cmd_vel.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.1514904"
+     inkscape:cx="469.39165"
+     inkscape:cy="199.30691"
+     inkscape:window-width="1854"
+     inkscape:window-height="1131"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path5" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0.13331306,-22.517034)">
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.59978;stroke-opacity:1"
+       id="rect1"
+       width="41.093483"
+       height="22.214933"
+       x="0.16657695"
+       y="24.289806" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7.05556px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke-width:0.564999"
+       x="2.2699723"
+       y="34.723042"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="fill:#000000;fill-opacity:1;stroke-width:0.565"
+         x="2.2699723"
+         y="34.723042">teleop</tspan><tspan
+         sodipodi:role="line"
+         style="fill:#000000;fill-opacity:1;stroke-width:0.565"
+         x="2.2699723"
+         y="43.542492"
+         id="tspan7">(FoxGlove)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7.05556px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke-width:0.564999"
+       x="41.959846"
+       y="45.189079"
+       id="text1-2"><tspan
+         sodipodi:role="line"
+         id="tspan1-61"
+         style="fill:#f90000;fill-opacity:1;stroke-width:0.565"
+         x="41.959846"
+         y="45.189079">ma_cmd_vel</tspan><tspan
+         sodipodi:role="line"
+         style="fill:#f90000;fill-opacity:1;stroke-width:0.565"
+         x="41.959846"
+         y="54.00853"
+         id="tspan5">[Twist]</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7.05556px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#ffffff;fill-opacity:1;stroke-width:0.564999"
+       x="123.73328"
+       y="45.838593"
+       id="text1-2-0"><tspan
+         sodipodi:role="line"
+         id="tspan1-61-2"
+         style="fill:#f90000;fill-opacity:1;stroke-width:0.565"
+         x="123.73328"
+         y="45.838593">wheels/cmd</tspan><tspan
+         sodipodi:role="line"
+         style="fill:#f90000;fill-opacity:1;stroke-width:0.565"
+         x="123.73328"
+         y="54.658043"
+         id="tspan6">[JointStates]</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.564999;stroke-opacity:1"
+       id="rect1-3"
+       width="36.408627"
+       height="22.249716"
+       x="85.377991"
+       y="23.958403" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7.05556px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke-width:0.564999"
+       x="88.416161"
+       y="35.083256"
+       id="text1-5"><tspan
+         sodipodi:role="line"
+         id="tspan1-6"
+         style="fill:#000000;fill-opacity:1;stroke-width:0.565"
+         x="88.416161"
+         y="35.083256">vit_base</tspan><tspan
+         sodipodi:role="line"
+         style="fill:#000000;fill-opacity:1;stroke-width:0.565"
+         x="88.416161"
+         y="43.902706"
+         id="tspan9" /></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.564999;stroke-opacity:1"
+       id="rect1-7"
+       width="36.408627"
+       height="22.249716"
+       x="170.04039"
+       y="22.799534" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:7.05556px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;stroke-width:0.564999"
+       x="171.05174"
+       y="32.57592"
+       id="text1-0"><tspan
+         sodipodi:role="line"
+         id="tspan1-9"
+         style="fill:#000000;fill-opacity:1;stroke-width:0.565"
+         x="171.05174"
+         y="32.57592">moteurs</tspan><tspan
+         sodipodi:role="line"
+         style="fill:#000000;fill-opacity:1;stroke-width:0.565"
+         x="171.05174"
+         y="41.39537"
+         id="tspan2">des roues</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.465;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized)"
+       d="m 39.105562,35.397276 39.105562,0.337117"
+       id="path2"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.564999"
+       d="m 105.51759,35.734392 54.27582,-0.337116"
+       id="path3" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.465;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#ArrowTriangleStylized)"
+       d="m 120.34255,35.397276 44.16231,-0.674234"
+       id="path4"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:4.93889px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+       x="18.630121"
+       y="49.160412"
+       id="text8"
+       transform="rotate(-30.748067)"><tspan
+         sodipodi:role="line"
+         id="tspan8"
+         style="font-size:4.93889px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+         x="18.630121"
+         y="49.160412">pub</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:4.93889px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+       x="88.029526"
+       y="90.181343"
+       id="text8-2"
+       transform="rotate(-30.748067)"><tspan
+         sodipodi:role="line"
+         id="tspan8-2"
+         style="font-size:4.93889px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+         x="88.029526"
+         y="90.181343">pub</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:4.93889px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+       x="73.95742"
+       y="-35.506367"
+       id="text8-2-6"
+       transform="rotate(44.961679)"><tspan
+         sodipodi:role="line"
+         id="tspan8-2-1"
+         style="font-size:4.93889px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+         x="73.95742"
+         y="-35.506367">sub</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:4.93889px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+       x="132.60143"
+       y="-95.497505"
+       id="text8-2-6-9"
+       transform="rotate(44.961679)"><tspan
+         sodipodi:role="line"
+         id="tspan8-2-1-4"
+         style="font-size:4.93889px;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365;stroke-dasharray:none;stroke-opacity:1"
+         x="132.60143"
+         y="-95.497505">sub</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:4.23333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';writing-mode:lr-tb;direction:ltr;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.365001;stroke-dasharray:none;stroke-opacity:1"
+       x="86.721504"
+       y="41.588329"
+       id="text10"><tspan
+         sodipodi:role="line"
+         id="tspan10"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';fill:#000000;fill-opacity:1;stroke-width:0.365"
+         x="86.721504"
+         y="41.588329">(circle.py modifié)</tspan></text>
+  </g>
+</svg>

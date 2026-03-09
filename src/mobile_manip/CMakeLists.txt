@@ -8,8 +8,16 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclpy REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
+ament_export_dependencies(rosidl_default_runtime)
 
+# generate custom messages
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/PoseStampedArray.msg"
+  DEPENDENCIES geometry_msgs std_msgs
+)
 
 install(PROGRAMS
   scripts/gen3_lite_teleop.py
@@ -17,12 +25,25 @@ install(PROGRAMS
   RENAME teleop_node
 )
 
+install(PROGRAMS
+  scripts/arm_ik_controller.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME arm_ik_controller
+)
+
+install(PROGRAMS
+  scripts/tag_pose.py
+  DESTINATION lib/${PROJECT_NAME}
+  RENAME tag_pose
+)
+
 install(
   DIRECTORY
     config
     launch
     models
-    worlds    
+    worlds
+    maps    
   DESTINATION share/${PROJECT_NAME}/
 )
 

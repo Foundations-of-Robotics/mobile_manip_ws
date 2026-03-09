@@ -1,0 +1,65 @@
+material floor_1_Diffuse
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture gray_flooring.png
+			}
+		}
+	}
+}
+material ceiling_1_Diffuse
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture gray_flooring.png
+			}
+		}
+	}
+}
+material floor_2_Diffuse
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture concrete3.png
+			}
+		}
+	}
+}
+material wall_1_Diffuse
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture white_brick.png
+			}
+		}
+	}
+}
+material wall_2_Diffuse
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture default.png
+			}
+		}
+	}
+}
