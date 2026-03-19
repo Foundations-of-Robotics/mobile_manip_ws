@@ -1,16 +1,6 @@
 # Copyright 2023 Clearpath Robotics, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 #
 # @author Roni Kreinin (rkreinin@clearpathrobotics.com)
 
@@ -20,7 +10,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
+from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PathJoinSubstitution
 from launch.conditions import IfCondition, UnlessCondition
 
 
@@ -40,9 +30,9 @@ ARGUMENTS = [
                           choices=['true', 'false'],
                           description='use_sim_time'),
     DeclareLaunchArgument('generate',
-                      default_value='true',
-                      choices=['true', 'false'],
-                      description='Generate parameters and launch files'),
+                          default_value='true',
+                          choices=['true', 'false'],
+                          description='Generate parameters and launch files'),
 ]
 
 for pose_element in ['x', 'y', 'yaw']:
@@ -54,50 +44,32 @@ ARGUMENTS.append(DeclareLaunchArgument('z', default_value='0.3',
 
 
 def generate_launch_description():
-    # Directories
-    pkg_clearpath_gz = get_package_share_directory(
-        'clearpath_gz')
-    pkg_doody_bringup = get_package_share_directory(
-        'doody_bringup')
-    
-    nogui = LaunchConfiguration('nogui')
-    headless = LaunchConfiguration('headless')
+    pkg_clearpath_gz = get_package_share_directory('clearpath_gz')
+    pkg_mobile_manip = get_package_share_directory('mobile_manip')
 
-    # Paths (conditional)
-    gz_sim_launch = PathJoinSubstitution(
-        [pkg_clearpath_gz, 'launch', 'gz_sim.launch.py'])
-    gz_sim_launch_nogui = PathJoinSubstitution(
-        [pkg_doody_bringup, 'launch', 'gz_sim_nogui.launch.py'])
-    gz_sim_launch_headless = PathJoinSubstitution(
-        [pkg_doody_bringup, 'launch', 'gz_sim_headless.launch.py'])
-    robot_spawn_launch = PathJoinSubstitution(
-        [pkg_clearpath_gz, 'launch', 'robot_spawn.launch.py'])
+    gz_sim_launch = PathJoinSubstitution([pkg_clearpath_gz, 'launch', 'gz_sim.launch.py'])
+    gz_sim_launch_nogui = PathJoinSubstitution([pkg_mobile_manip, 'launch', 'gz_sim_nogui.launch.py'])
+    gz_sim_launch_headless = PathJoinSubstitution([pkg_mobile_manip, 'launch', 'gz_sim_headless.launch.py'])
+    robot_spawn_launch = PathJoinSubstitution([pkg_clearpath_gz, 'launch', 'robot_spawn.launch.py'])
 
     gz_sim = GroupAction(
         actions=[
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([gz_sim_launch]),
-                launch_arguments=[
-                    ('world', LaunchConfiguration('world'))
-                ],
+                launch_arguments=[('world', LaunchConfiguration('world'))],
                 condition=UnlessCondition(LaunchConfiguration('headless'))
             )
         ],
         condition=UnlessCondition(LaunchConfiguration('nogui'))
     )
-    # Add second condition to the group for headless
     gz_sim_ng = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gz_sim_launch_nogui]),
-        launch_arguments=[
-            ('world', LaunchConfiguration('world'))
-        ],
+        launch_arguments=[('world', LaunchConfiguration('world'))],
         condition=IfCondition(LaunchConfiguration('nogui'))
     )
     gz_sim_hl = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gz_sim_launch_headless]),
-        launch_arguments=[
-            ('world', LaunchConfiguration('world'))
-        ],
+        launch_arguments=[('world', LaunchConfiguration('world'))],
         condition=IfCondition(LaunchConfiguration('headless'))
     )
 
@@ -115,7 +87,6 @@ def generate_launch_description():
             ('generate', LaunchConfiguration('generate'))]
     )
 
-    # Create launch description and add actions
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(gz_sim_hl)
     ld.add_action(gz_sim_ng)

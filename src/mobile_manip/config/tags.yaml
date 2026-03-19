@@ -1,4 +1,4 @@
-apriltag:                 # node name
+/mobile_manip/apriltag:
   ros__parameters:
     # setup (defaults)
     image_transport: raw  # image format: "raw" or "compressed"
@@ -10,10 +10,10 @@ apriltag:                 # node name
     max_hamming: 0        # maximum allowed hamming distance (corrected bits)
     detector:
       threads: 1          # number of threads
-      decimate: 2.0       # decimate resolution for quad detection
+      decimate: 4.0       # decimate resolution for quad detection
       blur: 0.0           # sigma of Gaussian blur for quad detection
-      refine: true           # snap to strong gradients
-      sharpening: 0.25    # sharpening of decoded images
+      refine: false           # snap to strong gradients
+      sharpening: 0.0    # sharpening of decoded images
       debug: false            # write additional debugging images to current working directory
 
     pose_estimation_method: "pnp" # method for estimating the tag pose

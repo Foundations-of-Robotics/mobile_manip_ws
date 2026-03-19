@@ -17,7 +17,7 @@ platform:
     model: TLV1222
     configuration: S1P1
   enable_foxglove_bridge: false  #do not seem to work on humble...
-  enable_ekf: false
+  enable_ekf: true
   attachments: {}
   extras:
     launch: [] #do not seem to work on humble...

@@ -9,16 +9,31 @@
   <member_of_group>rosidl_interface_packages</member_of_group>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
+  <exec_depend>ament_index_python</exec_depend>
   <build_depend>geometry_msgs</build_depend>
   <exec_depend>geometry_msgs</exec_depend>
+  <build_depend>nav_msgs</build_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <build_depend>std_msgs</build_depend>
   <exec_depend>std_msgs</exec_depend>
+  <depend>tf2</depend>
+  <depend>tf2_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
-  <depend>rclpy</depend>
   <depend>ros_gz</depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_image</exec_depend>
   <depend>foxglove_bridge</depend>
+  <exec_depend>clearpath_gz</exec_depend>
+  <exec_depend>depthimage_to_laserscan</exec_depend>
   <depend>nav2_map_server</depend>
+  <exec_depend>nav2_util</exec_depend>
   <depend>apriltag_ros</depend>
   <depend>trajectory_msgs</depend>
   <depend>pinocchio</depend>

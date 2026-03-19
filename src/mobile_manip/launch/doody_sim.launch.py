@@ -83,7 +83,7 @@ def generate_launch_description():
         PathJoinSubstitution([mm_dir, "models/"])
     )
     
-    launch_dir_db = PathJoinSubstitution([FindPackageShare('doody_bringup'), 'launch'])
+    launch_dir_db = PathJoinSubstitution([FindPackageShare('mobile_manip'), 'launch'])
     dingo_sim_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([PathJoinSubstitution([launch_dir_db, 'simulation.launch.py'])]),
         launch_arguments={
@@ -144,6 +144,15 @@ def generate_launch_description():
             )
         ])
 
+    odometry_path_publisher = LaunchDescription([
+            Node(
+                package='mobile_manip',
+                executable='odometry_path_publisher',
+                output='screen',
+                name='odometry_path_publisher',
+            )
+        ])
+
     return LaunchDescription([
         DeclareLaunchArgument('nogui', default_value='false'),
         DeclareLaunchArgument('headless', default_value='false'),
@@ -157,4 +166,5 @@ def generate_launch_description():
 		include_launch_sensors,
         map_server_node,
         map_server_lc,
+        odometry_path_publisher,
     ])

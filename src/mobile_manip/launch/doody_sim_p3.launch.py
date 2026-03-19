@@ -94,9 +94,9 @@ def generate_launch_description():
         PathJoinSubstitution([mm_dir, "models/"])
     )
     
-    launch_dir_db = PathJoinSubstitution([FindPackageShare('doody_bringup'), 'launch'])
+    launch_dir_mm = PathJoinSubstitution([mm_dir, 'launch'])
     dingo_sim_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([PathJoinSubstitution([launch_dir_db, 'simulation.launch.py'])]),
+        PythonLaunchDescriptionSource([PathJoinSubstitution([launch_dir_mm, 'simulation.launch.py'])]),
         launch_arguments={
             'headless': headless,
             'nogui': LaunchConfiguration('nogui'),
@@ -128,7 +128,7 @@ def generate_launch_description():
     )
     # ---------------------------------------------------------------------------------------------.
 	
-    device_launch = PathJoinSubstitution([launch_dir_db, 'sensors_dummy.launch.py'])
+    device_launch = PathJoinSubstitution([launch_dir_mm, 'sensors_dummy.launch.py'])
     include_launch_sensors = IncludeLaunchDescription(PythonLaunchDescriptionSource([device_launch]))
     
     map_server_node = LaunchDescription([
@@ -159,13 +159,15 @@ def generate_launch_description():
             Node(
                 package='apriltag_ros',
                 executable='apriltag_node',
+                name='apriltag',
+                namespace='mobile_manip',
                 output='screen',
-                remappings=[('tf', '/mobile_manip/tf')],
+                remappings=[('/tf', '/mobile_manip/tf')],
+                parameters=[PathJoinSubstitution([mm_dir, 'config/tags.yaml'])],
                 arguments=[
                     '--ros-args',
                     '-r', 'image_rect:=/mobile_manip/sensors/t265/fisheye1/image',
                     '-r', 'camera_info:=/mobile_manip/sensors/t265/fisheye1/camera_info',
-                    '--params-file', PathJoinSubstitution([mm_dir, 'config/tags.yaml']),
                 ],
             )
         ])
@@ -173,6 +175,7 @@ def generate_launch_description():
     tag_pose_node = LaunchDescription([
             Node(
                 package='mobile_manip',
+                namespace='mobile_manip',
                 executable='tag_pose',
                 output='screen',
                 name='tag_pose_publisher',
@@ -182,6 +185,38 @@ def generate_launch_description():
                 ]
             )
         ])
+
+    fused_tf = LaunchDescription([
+        Node(
+            package='mobile_manip',
+            namespace='mobile_manip',
+            executable='fused_odom_tf',
+            name='fused_odom_tf',
+            output='screen',
+            parameters=[
+                {'fused_odom_topic': '/mobile_manip/sensors/fused_odometry'},
+            ],
+            remappings=[
+                ('/tf', '/mobile_manip/tf'),
+                ('/tf_static', '/mobile_manip/tf_static')
+            ],
+        ),
+    ])
+
+    odometry_path_publisher = LaunchDescription([
+        Node(
+            package='mobile_manip',
+            namespace='mobile_manip',
+            executable='odometry_path_publisher',
+            name='odometry_path_publisher',
+            output='screen',
+            parameters=[
+                {'scan_period_s': 10.0},
+                {'path_buffer_size': 500},
+                {'default_frame_id': 'map'},
+            ],
+        ),
+    ])
     
     
     return LaunchDescription([
@@ -198,5 +233,7 @@ def generate_launch_description():
         map_server_node,
         map_server_lc,
         apriltag_ros,
-        tag_pose_node
+        tag_pose_node,
+        fused_tf,
+        odometry_path_publisher,
     ])

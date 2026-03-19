@@ -2,6 +2,8 @@ sensors
 manipulators
 platform
 project*
+projet*
+rmf_gazebo
 
 robot.srdf
 robot.srdf.xacro
