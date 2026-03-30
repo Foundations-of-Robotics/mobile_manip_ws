@@ -109,7 +109,7 @@ class ArmIKController(Node):
             'arm_0_joint_5',
             'arm_0_joint_6',
         ]
-        
+
         # Approximate reachable workspace limits for END_EFFECTOR frame (meters)
         self.workspace_limits = {
             'x': (-0.629, 0.634),

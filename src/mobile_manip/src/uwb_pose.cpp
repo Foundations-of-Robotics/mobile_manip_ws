@@ -55,6 +55,61 @@ public:
   }
 
 private:
+  struct RollPitchYaw
+  {
+    double roll;
+    double pitch;
+    double yaw;
+  };
+
+  static double heading_from_quaternion(const geometry_msgs::msg::Quaternion & q)
+  {
+    const double siny_cosp = 2.0 * (q.w * q.z + q.x * q.y);
+    const double cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z);
+    return std::atan2(siny_cosp, cosy_cosp);
+  }
+
+  static RollPitchYaw rpy_from_quaternion(const geometry_msgs::msg::Quaternion & q)
+  {
+    constexpr double kHalfPi = 1.5707963267948966;
+    RollPitchYaw rpy{};
+
+    const double sinr_cosp = 2.0 * (q.w * q.x + q.y * q.z);
+    const double cosr_cosp = 1.0 - 2.0 * (q.x * q.x + q.y * q.y);
+    rpy.roll = std::atan2(sinr_cosp, cosr_cosp);
+
+    const double sinp = 2.0 * (q.w * q.y - q.z * q.x);
+    if (std::abs(sinp) >= 1.0) {
+      rpy.pitch = std::copysign(kHalfPi, sinp);
+    } else {
+      rpy.pitch = std::asin(sinp);
+    }
+
+    rpy.yaw = heading_from_quaternion(q);
+    return rpy;
+  }
+
+  static geometry_msgs::msg::Quaternion quaternion_from_rpy(
+    double roll,
+    double pitch,
+    double yaw)
+  {
+    geometry_msgs::msg::Quaternion q;
+
+    const double cy = std::cos(yaw * 0.5);
+    const double sy = std::sin(yaw * 0.5);
+    const double cp = std::cos(pitch * 0.5);
+    const double sp = std::sin(pitch * 0.5);
+    const double cr = std::cos(roll * 0.5);
+    const double sr = std::sin(roll * 0.5);
+
+    q.w = cr * cp * cy + sr * sp * sy;
+    q.x = sr * cp * cy - cr * sp * sy;
+    q.y = cr * sp * cy + sr * cp * sy;
+    q.z = cr * cp * sy - sr * sp * cy;
+    return q;
+  }
+
   double gaussian(double stddev)
   {
     if (stddev <= 0.0) {
@@ -114,19 +169,11 @@ private:
     }
 
     if (orientation_noise_std_ > 0.0) {
-      auto & q = pose_out.pose.pose.orientation;
-      q.x += gaussian(orientation_noise_std_);
-      q.y += gaussian(orientation_noise_std_);
-      q.z += gaussian(orientation_noise_std_);
-      q.w += gaussian(orientation_noise_std_);
-
-      const double magnitude = std::sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-      if (magnitude > 0.0) {
-        q.x /= magnitude;
-        q.y /= magnitude;
-        q.z /= magnitude;
-        q.w /= magnitude;
-      }
+      const auto rpy = rpy_from_quaternion(pose_out.pose.pose.orientation);
+      pose_out.pose.pose.orientation = quaternion_from_rpy(
+        rpy.roll,
+        rpy.pitch,
+        rpy.yaw + gaussian(orientation_noise_std_));
     }
 
     pose_pub_->publish(pose_out);

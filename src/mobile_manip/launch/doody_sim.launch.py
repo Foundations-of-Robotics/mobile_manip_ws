@@ -7,6 +7,8 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.conditions import IfCondition, UnlessCondition
+import getpass
+import re
 import socket, fcntl, struct
 
 def getifip(ifn):
@@ -58,10 +60,20 @@ def get_internetIP():
 	return "0.0.0.0"
 
 
+def get_foxglove_port():
+    username = getpass.getuser()
+    match = re.fullmatch(r'mecbotg([0-9])', username)
+    if match:
+        return f"878{match.group(1)}"
+    return "8765"
+
+
 
 def generate_launch_description():
     myip = get_internetIP()
+    foxglove_port = get_foxglove_port()
     print("My IP is: ", myip)
+    print("Foxglove port is: ", foxglove_port)
 
     headless = LaunchConfiguration('headless')
     robot_ip = LaunchConfiguration('robot_ip')
@@ -107,12 +119,16 @@ def generate_launch_description():
         XMLLaunchDescriptionSource([PathJoinSubstitution([mm_dir, 'launch/foxglove.xml'])]),
         launch_arguments={
             'address': myip,
+            'port': foxglove_port,
         }.items(),
         condition=IfCondition(headless)
     )
     foxglove_launch = IncludeLaunchDescription(
         #XMLLaunchDescriptionSource([PathJoinSubstitution([launch_dir_fox, 'foxglove_bridge_launch.xml'])]),
         XMLLaunchDescriptionSource([PathJoinSubstitution([mm_dir, 'launch/foxglove.xml'])]),
+        launch_arguments={
+            'port': foxglove_port,
+        }.items(),
         condition=UnlessCondition(headless)
     )
     # ---------------------------------------------------------------------------------------------.

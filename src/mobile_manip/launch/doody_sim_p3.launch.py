@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, AppendEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, AppendEnvironmentVariable, ExecuteProcess, TimerAction
 from launch.substitutions import PathJoinSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
@@ -9,6 +9,9 @@ from launch_ros.substitutions import FindPackageShare
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import Command
 from launch_ros.descriptions import ParameterValue
+import json
+import getpass
+import re
 import socket, fcntl, struct
 
 def getifip(ifn):
@@ -60,10 +63,36 @@ def get_internetIP():
 	return "0.0.0.0"
 
 
+def get_foxglove_port():
+    username = getpass.getuser()
+    match = re.fullmatch(r'mecbotg([0-9])', username)
+    if match:
+        return f"878{match.group(1)}"
+    return "8765"
+
+
 
 def generate_launch_description():
     myip = get_internetIP()
+    foxglove_port = get_foxglove_port()
     print("My IP is: ", myip)
+    print("Foxglove port is: ", foxglove_port)
+    retract_joint_positions = [
+        -0.05235987901687622,
+        0.36651915311813354,
+        2.5307273864746094,
+        -1.535889744758606,
+        -0.6981316804885864,
+        -1.5184364318847656,
+    ]
+    retract_joint_names = [
+        'arm_0_joint_1',
+        'arm_0_joint_2',
+        'arm_0_joint_3',
+        'arm_0_joint_4',
+        'arm_0_joint_5',
+        'arm_0_joint_6',
+    ]
 
     headless = LaunchConfiguration('headless')
     robot_ip = LaunchConfiguration('robot_ip')
@@ -118,12 +147,16 @@ def generate_launch_description():
         #XMLLaunchDescriptionSource([PathJoinSubstitution([mm_dir, 'launch/foxglove.xml'])]),
         launch_arguments={
             'address': myip,
+            'port': foxglove_port,
         }.items(),
         condition=IfCondition(headless)
     )
     foxglove_launch = IncludeLaunchDescription(
         XMLLaunchDescriptionSource([PathJoinSubstitution([launch_dir_fox, 'foxglove_bridge_launch.xml'])]),
         #XMLLaunchDescriptionSource([PathJoinSubstitution([mm_dir, 'launch/foxglove.xml'])]),
+        launch_arguments={
+            'port': foxglove_port,
+        }.items(),
         condition=UnlessCondition(headless)
     )
     # ---------------------------------------------------------------------------------------------.
@@ -217,6 +250,31 @@ def generate_launch_description():
             ],
         ),
     ])
+
+    startup_retract_publish = TimerAction(
+        period=20.0,
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    'ros2',
+                    'topic',
+                    'pub',
+                    '--once',
+                    '/mobile_manip/arm_0_joint_trajectory_controller/joint_trajectory',
+                    'trajectory_msgs/msg/JointTrajectory',
+                    json.dumps({
+                        'joint_names': retract_joint_names,
+                        'points': [{
+                            'positions': retract_joint_positions,
+                            'velocities': [0.0] * len(retract_joint_names),
+                            'time_from_start': {'sec': 5, 'nanosec': 0},
+                        }],
+                    }),
+                ],
+                output='screen',
+            ),
+        ],
+    )
     
     
     return LaunchDescription([
@@ -236,4 +294,5 @@ def generate_launch_description():
         tag_pose_node,
         fused_tf,
         odometry_path_publisher,
+        startup_retract_publish,
     ])

@@ -73,12 +73,6 @@ install(PROGRAMS
   RENAME arm_ik_controller
 )
 
-install(PROGRAMS
-  scripts/discovery_server_manager.py
-  DESTINATION lib/${PROJECT_NAME}
-  RENAME discovery_server_manager
-)
-
 install(
   DIRECTORY
     config

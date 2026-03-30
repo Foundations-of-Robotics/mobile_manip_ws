@@ -53,11 +53,64 @@ public:
   }
 
 private:
+  struct RollPitchYaw
+  {
+    double roll;
+    double pitch;
+    double yaw;
+  };
+
+  static double normalize_angle(double angle)
+  {
+    return std::atan2(std::sin(angle), std::cos(angle));
+  }
+
   static double heading_from_quaternion(const geometry_msgs::msg::Quaternion & q)
   {
     const double siny_cosp = 2.0 * (q.w * q.z + q.x * q.y);
     const double cosy_cosp = 1.0 - 2.0 * (q.y * q.y + q.z * q.z);
     return std::atan2(siny_cosp, cosy_cosp);
+  }
+
+  static RollPitchYaw rpy_from_quaternion(const geometry_msgs::msg::Quaternion & q)
+  {
+    constexpr double kHalfPi = 1.5707963267948966;
+    RollPitchYaw rpy{};
+
+    const double sinr_cosp = 2.0 * (q.w * q.x + q.y * q.z);
+    const double cosr_cosp = 1.0 - 2.0 * (q.x * q.x + q.y * q.y);
+    rpy.roll = std::atan2(sinr_cosp, cosr_cosp);
+
+    const double sinp = 2.0 * (q.w * q.y - q.z * q.x);
+    if (std::abs(sinp) >= 1.0) {
+      rpy.pitch = std::copysign(kHalfPi, sinp);
+    } else {
+      rpy.pitch = std::asin(sinp);
+    }
+
+    rpy.yaw = heading_from_quaternion(q);
+    return rpy;
+  }
+
+  static geometry_msgs::msg::Quaternion quaternion_from_rpy(
+    double roll,
+    double pitch,
+    double yaw)
+  {
+    geometry_msgs::msg::Quaternion q;
+
+    const double cy = std::cos(yaw * 0.5);
+    const double sy = std::sin(yaw * 0.5);
+    const double cp = std::cos(pitch * 0.5);
+    const double sp = std::sin(pitch * 0.5);
+    const double cr = std::cos(roll * 0.5);
+    const double sr = std::sin(roll * 0.5);
+
+    q.w = cr * cp * cy + sr * sp * sy;
+    q.x = sr * cp * cy - cr * sp * sy;
+    q.y = cr * sp * cy + sr * cp * sy;
+    q.z = cr * cp * sy - sr * sp * cy;
+    return q;
   }
 
   double gaussian(double stddev)
@@ -97,7 +150,7 @@ private:
       latest_vel_.linear.z = (msg->position.z - prev_pose_.position.z) / dt;
       latest_vel_.angular.x = 0.0;
       latest_vel_.angular.y = 0.0;
-      latest_vel_.angular.z = (yaw - prev_yaw_) / dt;
+      latest_vel_.angular.z = normalize_angle(yaw - prev_yaw_) / dt;
       prev_yaw_ = yaw;
     }
 
@@ -127,20 +180,15 @@ private:
       odom.pose.pose.position.z = 0.0;
     }
 
-    if (orientation_noise_std_ > 0.0) {
-      auto & q = odom.pose.pose.orientation;
-      q.x = (q.x - offset_.orientation.x) + gaussian(orientation_noise_std_);
-      q.y = (q.y - offset_.orientation.y) + gaussian(orientation_noise_std_);
-      q.z = (q.z - offset_.orientation.z) + gaussian(orientation_noise_std_);
-      q.w = (q.w - offset_.orientation.w) + gaussian(orientation_noise_std_);
-
-      const double magnitude = std::sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
-      if (magnitude > 0.0) {
-        q.x /= magnitude;
-        q.y /= magnitude;
-        q.z /= magnitude;
-        q.w /= magnitude;
-      }
+    {
+      const auto rpy = rpy_from_quaternion(odom.pose.pose.orientation);
+      const double yaw_offset = heading_from_quaternion(offset_.orientation);
+      const double yaw_noise =
+        orientation_noise_std_ > 0.0 ? gaussian(orientation_noise_std_) : 0.0;
+      odom.pose.pose.orientation = quaternion_from_rpy(
+        rpy.roll,
+        rpy.pitch,
+        normalize_angle(rpy.yaw - yaw_offset + yaw_noise));
     }
 
     odom.twist.twist = latest_vel_;
