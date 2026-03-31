@@ -6,6 +6,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "tf2/LinearMath/Transform.h"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+#include "tf2/time.h"
 #include "tf2_ros/buffer.h"
 #include "tf2_ros/create_timer_ros.h"
 #include "tf2_ros/transform_broadcaster.h"
@@ -49,14 +50,39 @@ private:
   void fused_odom_callback(const nav_msgs::msg::Odometry::SharedPtr msg)
   {
     geometry_msgs::msg::TransformStamped odom_to_base_link;
+    const rclcpp::Time lookup_stamp = msg->header.stamp;
     try {
       odom_to_base_link = tf_buffer_.lookupTransform(
         lookup_parent_frame_,
         lookup_child_frame_,
-        tf2::TimePointZero);
+        lookup_stamp);
     } catch (const tf2::TransformException & exc) {
-      RCLCPP_WARN(this->get_logger(), "Lookup TF odom->base_link failed: %s", exc.what());
-      return;
+      try {
+        odom_to_base_link = tf_buffer_.lookupTransform(
+          lookup_parent_frame_,
+          lookup_child_frame_,
+          tf2::TimePointZero);
+        RCLCPP_WARN_THROTTLE(
+          this->get_logger(),
+          *this->get_clock(),
+          2000,
+          "Lookup TF %s->%s at stamp %.3f failed (%s). Falling back to latest transform.",
+          lookup_parent_frame_.c_str(),
+          lookup_child_frame_.c_str(),
+          lookup_stamp.seconds(),
+          exc.what());
+      } catch (const tf2::TransformException & latest_exc) {
+        RCLCPP_WARN_THROTTLE(
+          this->get_logger(),
+          *this->get_clock(),
+          2000,
+          "Lookup TF %s->%s failed at stamp %.3f and at latest: %s",
+          lookup_parent_frame_.c_str(),
+          lookup_child_frame_.c_str(),
+          lookup_stamp.seconds(),
+          latest_exc.what());
+        return;
+      }
     }
 
     tf2::Transform tf_odom_base;
@@ -73,7 +99,7 @@ private:
     const tf2::Transform tf_odom_map = tf_odom_base * tf_map_base.inverse();
 
     geometry_msgs::msg::TransformStamped tf_msg;
-    tf_msg.header.stamp = msg->header.stamp;
+    tf_msg.header.stamp = lookup_stamp;
     tf_msg.header.frame_id = output_parent_frame_;
     tf_msg.child_frame_id = output_child_frame_;
     tf_msg.transform = tf2::toMsg(tf_odom_map);

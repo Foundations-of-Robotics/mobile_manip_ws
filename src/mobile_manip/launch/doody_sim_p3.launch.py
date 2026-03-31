@@ -227,6 +227,7 @@ def generate_launch_description():
             name='fused_odom_tf',
             output='screen',
             parameters=[
+                {'use_sim_time': True},
                 {'fused_odom_topic': '/mobile_manip/sensors/fused_odometry'},
             ],
             remappings=[

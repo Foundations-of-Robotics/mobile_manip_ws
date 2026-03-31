@@ -45,7 +45,8 @@ def generate_launch_description():
         remappings=[('/tf', '/mobile_manip/tf')],
         output='screen',
         parameters=[{
-            'publish_rate': 20.0,
+            'use_sim_time': True,
+            'publish_rate': 50.0,
         }],
     )
 
